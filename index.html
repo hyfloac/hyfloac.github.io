@@ -76,10 +76,10 @@
                                         </a>
                                         <div class="collapse" id="TauEngineCollapse">
                                             <p>
-                                                <a href="https://github.com/hyfloac/TauEngine/releases/tag/v1.0-beta.0">Tau Engine</a> is a 3D rendering engine with backends written in OpenGL 4.3, Direct3D 10, and Direct3D 11. 
-                                                The abstraction makes the backend implementation opaque to the end user, leaving no visual differences between the scenes. 
-                                                You may notice a visual difference in the release as there is an additional post processing shader running in D3D, 
-                                                this is implemented for both API's, but was disabled for OpenGL to provide a visual indication that they are in fact running different backends.
+                                                <p><a href="https://github.com/hyfloac/TauEngine/releases/tag/v1.0-beta.0">Tau Engine</a> is a 3D rendering engine with backends written in OpenGL 4.3, Direct3D 10, and Direct3D 11. </p>
+                                                <p>The abstraction makes the backend implementation opaque to the end user, leaving no visual differences between the scenes.</p>
+                                                <p>You may notice a visual difference in the release as there is an additional post processing shader running in D3D, 
+                                                this is implemented for both API's, but was disabled for OpenGL to provide a visual indication that they are in fact running different backends.</p>
                                             </p>
                                         </div>
                                     </div>
@@ -90,13 +90,13 @@
                                         </a>
                                         <div class="collapse" id="TauReflectionGeneratorCollapse">
                                             <p>
-                                                <a href="https://github.com/hyfloac/TauEngine/releases/tag/1.0">Tau Reflection Generator</a> is a utilty executable designed to act similarly to Unreal Engine's UnrealHeaderTool.
-                                                I wanted to improve on the parsing abilities of the tool, as UE's tool had very rudimentary sytnax parsing, so I used Clang's api to be able to accurately C++.
-                                                The tool will go through header files and find the special macros and record their position. After the preprocessing phase it will iterate through the AST and when it
+                                                <p><a href="https://github.com/hyfloac/TauEngine/releases/tag/1.0">Tau Reflection Generator</a> is a utilty executable designed to act similarly to Unreal Engine's UnrealHeaderTool.</p>
+                                                <p>I wanted to improve on the parsing abilities of the tool, as UE's tool had very rudimentary sytnax parsing, so I used Clang's api to be able to accurately C++.</p>
+                                                <p>The tool will go through header files and find the special macros and record their position. After the preprocessing phase it will iterate through the AST and when it
                                                 encounters an element that was directly after one of the special macros it will record its data. Then an extensible utility will go through every tagged element and generate
                                                 a new header which contains macros for injecting custom code into the class. As a demo this generates reflection data for a class, allowing you to configure which properties (fields)
                                                 it will add the ability to get or set to. The special macros take in a var args, which during normal compilation will consume any tokens, but during the Tau codegen it can take any
-                                                tokens passed in and parse them however it likes, currently this just uses single identifiers like "get" and "set", but could take any lexable syntx.
+                                                tokens passed in and parse them however it likes, currently this just uses single identifiers like "get" and "set", but could take any lexable syntax.</p>
                                             </p>
                                         </div>
                                     </div>
@@ -106,9 +106,9 @@
                                             <h6>Tau IR</h6>
                                         </a>
                                         <div class="collapse" id="TauIRCollapse">
-                                            Tau IR is a small PoC intermediate representation. It is intended to be encoded into a .exe file similar to the CLR, when launched it sets its entry point to a member of a DLL, which will go through
+                                            <p>Tau IR is a small PoC intermediate representation. It is intended to be encoded into a .exe file similar to the CLR, when launched it sets its entry point to a member of a DLL, which will go through
                                             IR and JIT it. The JIT'ing is done by first converting the stack based IR into a different SSA based IR similar to LLVM IR. This SSA IR is easier to optimize, but can be substantially less compressed
-                                            due to the extra type tagging. The SSA IR can then be easily converted into optimized x86-64 assembly.
+                                            due to the extra type tagging. The SSA IR can then be easily converted into optimized x86-64 assembly.</p>
                                         </div>
                                     </div>
 
@@ -117,10 +117,20 @@
                                             <h6>Parsers</h6>
                                         </a>
                                         <div class="collapse" id="ParsersCollapse">
-                                            I have a lot of experience writing parsers. I've written custom data file parsers, custom programming language parsers, HTML parsers, JSON parsers. 
-                                            I have also written <a href="https://datatracker.ietf.org/doc/html/rfc822#section-6">RFC 822</a> <sub class="text-decoration-underline" title="I don't usually support quoted string because of how bad of an idea they are.">mostly</sub> 
-                                            compliant email address validators, though I have not written <a href="https://datatracker.ietf.org/doc/html/rfc2822#section-3.4.1">RFC 2822</a> 
-                                            compliant parsers, mostly because comments and whitespace in email addresses are such a bad idea.
+                                            <p>I have a lot of experience writing parsers. I've written custom data file parsers, custom programming language parsers, HTML parsers, JSON parsers.</p>
+                                            <p>I have also written <a href="https://datatracker.ietf.org/doc/html/rfc822#section-6">RFC 822</a>, <a href="https://datatracker.ietf.org/doc/html/rfc2822#section-3.4.1">RFC 2822</a>, and <a href="https://datatracker.ietf.org/doc/html/rfc2822#section-3.4.1">RFC 5322</a>  
+                                            compliant email address validators.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="list-group-item">
+                                        <a class="text-decoration-none" role="button" data-bs-toggle="collapse" href="#GpuCollapse" aria-expanded="false" aria-controls="GpuCollapse">
+                                            <h6>GPU</h6>
+                                        </a>
+                                        <div class="collapse" id="GpuCollapse">
+                                            <p>For fun I've been designing my own GPU. While I do have some experience with VHDL, I am mostly leaving the hardware side to my friend.</p>
+                                            <p>In the meantime I've been working on writing the <a href="https://github.com/hyfloac/GpuDrivers">Drivers</a>. This includes the Kernel Mode Display Miniport Driver and the User Mode Vulkan Installable Client Driver. In the future I plan on also adding the User Mode Display Driver (DirectX) and integrating the OpenGL ICD into the Vulkan ICD as this is a common industry practice.</p>
+                                            <p>I currently plan on emulting the GPU in userland with GHDL and using Minifilter. To interface with the computer the GPU will likely poll for interrupts by calling an external VHPI function which will check for filter messages. It will also likely use the IoMmu model so that it can take advantage of modern virtualization and use the systems memory.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -172,10 +182,10 @@
                                         </a>
                                         <div class="collapse" id="TauEngineCollapse">
                                             <p>
-                                                <a href="https://github.com/hyfloac/TauEngine/releases/tag/v1.0-beta.0">Tau Engine</a> is a 3D rendering engine with backends written in OpenGL 4.3, Direct3D 10, and Direct3D 11. 
-                                                The abstraction makes the backend implementation opaque to the end user, leaving no visual differences between the scenes. 
-                                                You may notice a visual difference in the release as there is an additional post processing shader running in D3D, 
-                                                this is implemented for both API's, but was disabled for OpenGL to provide a visual indication that they are in fact running different backends.
+                                                <p><a href="https://github.com/hyfloac/TauEngine/releases/tag/v1.0-beta.0">Tau Engine</a> is a 3D rendering engine with backends written in OpenGL 4.3, Direct3D 10, and Direct3D 11. </p>
+                                                <p>The abstraction makes the backend implementation opaque to the end user, leaving no visual differences between the scenes.</p>
+                                                <p>You may notice a visual difference in the release as there is an additional post processing shader running in D3D, 
+                                                this is implemented for both API's, but was disabled for OpenGL to provide a visual indication that they are in fact running different backends.</p>
                                             </p>
                                         </div>
                                     </div>
@@ -186,13 +196,13 @@
                                         </a>
                                         <div class="collapse" id="TauReflectionGeneratorCollapse">
                                             <p>
-                                                <a href="https://github.com/hyfloac/TauEngine/releases/tag/1.0">Tau Reflection Generator</a> is a utilty executable designed to act similarly to Unreal Engine's UnrealHeaderTool.
-                                                I wanted to improve on the parsing abilities of the tool, as UE's tool had very rudimentary sytnax parsing, so I used Clang's api to be able to accurately C++.
-                                                The tool will go through header files and find the special macros and record their position. After the preprocessing phase it will iterate through the AST and when it
+                                                <p><a href="https://github.com/hyfloac/TauEngine/releases/tag/1.0">Tau Reflection Generator</a> is a utilty executable designed to act similarly to Unreal Engine's UnrealHeaderTool.</p>
+                                                <p>I wanted to improve on the parsing abilities of the tool, as UE's tool had very rudimentary sytnax parsing, so I used Clang's api to be able to accurately C++.</p>
+                                                <p>The tool will go through header files and find the special macros and record their position. After the preprocessing phase it will iterate through the AST and when it
                                                 encounters an element that was directly after one of the special macros it will record its data. Then an extensible utility will go through every tagged element and generate
                                                 a new header which contains macros for injecting custom code into the class. As a demo this generates reflection data for a class, allowing you to configure which properties (fields)
                                                 it will add the ability to get or set to. The special macros take in a var args, which during normal compilation will consume any tokens, but during the Tau codegen it can take any
-                                                tokens passed in and parse them however it likes, currently this just uses single identifiers like "get" and "set", but could take any lexable syntx.
+                                                tokens passed in and parse them however it likes, currently this just uses single identifiers like "get" and "set", but could take any lexable syntax.</p>
                                             </p>
                                         </div>
                                     </div>
@@ -202,9 +212,9 @@
                                             <h6>Tau IR</h6>
                                         </a>
                                         <div class="collapse" id="TauIRCollapse">
-                                            Tau IR is a small PoC intermediate representation. It is intended to be encoded into a .exe file similar to the CLR, when launched it sets its entry point to a member of a DLL, which will go through
+                                            <p>Tau IR is a small PoC intermediate representation. It is intended to be encoded into a .exe file similar to the CLR, when launched it sets its entry point to a member of a DLL, which will go through
                                             IR and JIT it. The JIT'ing is done by first converting the stack based IR into a different SSA based IR similar to LLVM IR. This SSA IR is easier to optimize, but can be substantially less compressed
-                                            due to the extra type tagging. The SSA IR can then be easily converted into optimized x86-64 assembly.
+                                            due to the extra type tagging. The SSA IR can then be easily converted into optimized x86-64 assembly.</p>
                                         </div>
                                     </div>
 
@@ -213,10 +223,20 @@
                                             <h6>Parsers</h6>
                                         </a>
                                         <div class="collapse" id="ParsersCollapse">
-                                            I have a lot of experience writing parsers. I've written custom data file parsers, custom programming language parsers, HTML parsers, JSON parsers. 
-                                            I have also written <a href="https://datatracker.ietf.org/doc/html/rfc822#section-6">RFC 822</a> <sub class="text-decoration-underline" title="I don't usually support quoted string because of how bad of an idea they are.">mostly</sub> 
-                                            compliant email address validators, though I have not written <a href="https://datatracker.ietf.org/doc/html/rfc2822#section-3.4.1">RFC 2822</a> 
-                                            compliant parsers, mostly because comments and whitespace in email addresses are such a bad idea.
+                                            <p>I have a lot of experience writing parsers. I've written custom data file parsers, custom programming language parsers, HTML parsers, JSON parsers.</p>
+                                            <p>I have also written <a href="https://datatracker.ietf.org/doc/html/rfc822#section-6">RFC 822</a>, <a href="https://datatracker.ietf.org/doc/html/rfc2822#section-3.4.1">RFC 2822</a>, and <a href="https://datatracker.ietf.org/doc/html/rfc2822#section-3.4.1">RFC 5322</a>  
+                                            compliant email address validators.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="list-group-item">
+                                        <a class="text-decoration-none" role="button" data-bs-toggle="collapse" href="#GpuCollapse" aria-expanded="false" aria-controls="GpuCollapse">
+                                            <h6>GPU</h6>
+                                        </a>
+                                        <div class="collapse" id="GpuCollapse">
+                                            <p>For fun I've been designing my own GPU. While I do have some experience with VHDL, I am mostly leaving the hardware side to a friend.</p>
+                                            <p>In the meantime I've been working on writing the <a href="https://github.com/hyfloac/GpuDrivers">Drivers</a>. This includes the Kernel Mode Display Miniport Driver and the User Mode Vulkan Installable Client Driver. In the future I plan on also adding the User Mode Display Driver (DirectX) and integrating the OpenGL ICD into the Vulkan ICD as this is a common industry practice.</p>
+                                            <p>I currently plan on emulting the GPU in userland with GHDL and using Minifilter. To interface with the computer the GPU will likely poll for interrupts by calling an external VHPI function which will check for filter messages. It will also likely use the IoMmu model so that it can take advantage of modern virtualization and use the systems memory.</p>
                                         </div>
                                     </div>
                                 </div>
