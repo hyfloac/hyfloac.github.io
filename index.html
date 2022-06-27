@@ -131,6 +131,7 @@
                                             <p>For fun I've been designing my own GPU. While I do have some experience with VHDL, I am mostly leaving the hardware side to my friend.</p>
                                             <p>In the meantime I've been working on writing the <a href="https://github.com/hyfloac/GpuDrivers">Drivers</a>. This includes the Kernel Mode Display Miniport Driver and the User Mode Vulkan Installable Client Driver. In the future I plan on also adding the User Mode Display Driver (DirectX) and integrating the OpenGL ICD into the Vulkan ICD as this is a common industry practice.</p>
                                             <p>I currently plan on emulting the GPU in userland with GHDL and using Minifilter. To interface with the computer the GPU will likely poll for interrupts by calling an external VHPI function which will check for filter messages. It will also likely use the IoMmu model so that it can take advantage of modern virtualization and use the systems memory.</p>
+                                            <p>As an intermediary I have been implementing the <a href="https://github.com/hyfloac/SoftGpu">GPU</a> in software, though designed with conversion to hardware in mind.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -237,6 +238,7 @@
                                             <p>For fun I've been designing my own GPU. While I do have some experience with VHDL, I am mostly leaving the hardware side to a friend.</p>
                                             <p>In the meantime I've been working on writing the <a href="https://github.com/hyfloac/GpuDrivers">Drivers</a>. This includes the Kernel Mode Display Miniport Driver and the User Mode Vulkan Installable Client Driver. In the future I plan on also adding the User Mode Display Driver (DirectX) and integrating the OpenGL ICD into the Vulkan ICD as this is a common industry practice.</p>
                                             <p>I currently plan on emulting the GPU in userland with GHDL and using Minifilter. To interface with the computer the GPU will likely poll for interrupts by calling an external VHPI function which will check for filter messages. It will also likely use the IoMmu model so that it can take advantage of modern virtualization and use the systems memory.</p>
+                                            <p>As an intermediary I have been implementing the <a href="https://github.com/hyfloac/SoftGpu">GPU</a> in software, though designed with conversion to hardware in mind.</p>
                                         </div>
                                     </div>
                                 </div>
