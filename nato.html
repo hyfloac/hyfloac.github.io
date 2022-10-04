@@ -19,6 +19,10 @@
         gtag('js', new Date());
 
         gtag('config', 'G-B1ELNH44BM');
+        // Disable Ad Tracking
+        gtag('set', 'allow_google_signals', false);
+        // Disable Ad Personalization on this site.
+        gtag('set', 'allow_ad_personalization_signals', false);
     </script>
 </head>
 
@@ -26,29 +30,41 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <div class="row">
-                    <div class="col">
-                        <div class="container">
-                            <form id="textInputForm">
-                                <div class="form-group">
-                                    <label for="textInput">Text to Decode</label>
-                                    <textarea class="form-control" id="textInput" rows="3"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <input type="checkbox" class="form-check-input" id="useCapitalization" />
-                                    <label class="form-check-label" for="useCapitalization">Pronounce Capitalization</label>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-                        </div>
-                    </div>
+                <div class="container">
+                    <div class="d-flex p-2">
+                        <h1>NATO Phoneticizer</h1>
+                    </div>  
                 </div>
+            </div>
+        </div>
 
-                <div class="row">
-                    <div class="col">
-                        <div class="container">
-                            <div id="natoSpeach"></div>
-                        </div>
+        <div class="row">
+            <div class="col">
+                <div class="container mb-2">
+                    <hr>
+                    <div class="d-flex p-2">
+                        <form id="textInputForm" class="flex-fill">
+                            <div class="form-group mb-2">
+                                <label for="textInput">Text to Phoneticize</label>
+                                <textarea class="form-control" id="textInput" rows="3"></textarea>
+                            </div>
+                            <div class="form-group mb-2">
+                                <input type="checkbox" class="form-check-input" id="useCapitalization" />
+                                <label class="form-check-label" for="useCapitalization">Pronounce Capitalization</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="container">
+                    <div class="d-flex p-2">
+                        <div id="natoSpeach"></div>
                     </div>
                 </div>
             </div>
@@ -66,26 +82,45 @@
                 const natoSpeachContainer = document.getElementById("natoSpeach");
 
                 form.addEventListener("submit", (e) => {
+                    // Only send that someone has phoneticized.
+                    // Do not send any information about the phoneticization.
+                    gtag('event', 'phoneticize', {
+                        'event_category': 'general',
+                        'event_label': "User Phoneticized Text"
+                    });
+
                     natoSpeachContainer.innerHTML = "";
 
                     const speach = textInput.value;
                     const useCapitalization = useCapitalizationInput.checked;
 
+                    let textRowDiv = undefined;
+                    let textColDiv = undefined;
+
+
                     for(let i = 0; i < speach.length; ++i) 
                     {
+                        if(i % 3 === 0) 
+                        {
+                            textRowDiv = document.createElement("div");
+                            textRowDiv.className = "row mb-3";
+                            textColDiv = document.createElement("div");
+                            textColDiv.className = "col";
+
+                            textRowDiv.appendChild(textColDiv);
+                            natoSpeachContainer.appendChild(textRowDiv);
+
+                            // const breaker = document.createElement("br");
+                            // natoSpeachContainer.appendChild(breaker);
+                        }
+
                         const natoPhrase = GetSpeach(speach.charCodeAt(i), useCapitalization);
                         
                         const paragraph = document.createElement("p");
                         const textNode = document.createTextNode(natoPhrase);
                         paragraph.appendChild(textNode);
 
-                        natoSpeachContainer.appendChild(paragraph);
-
-                        if(i % 3 === 2) 
-                        {
-                            const breaker = document.createElement("br");
-                            natoSpeachContainer.appendChild(breaker);
-                        }
+                        textColDiv.appendChild(paragraph);
                     }
 
                     // natoSpeachContainer.textContent = speach;
