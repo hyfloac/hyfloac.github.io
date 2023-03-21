@@ -107,10 +107,10 @@
                             <div class="col col-12 col-sm col-md">
                                 <div class="mb-2">
                                     <label id="yearsInputLabel" for="yearsInput" class="form-label">Years</label>
-                                    <input type="text" class="form-control" id="yearsInput" aria-labelledby="yearsInputLabel" value="80" required>
+                                    <input type="text" class="form-control" id="yearsInput" aria-labelledby="yearsInputLabel" value="60" required>
                                 </div>
                                 <div class="mb-3">
-                                    <input type="range" class="form-range" id="yearsRangeInput" aria-labelledby="yearsInputLabel" value="80" min="0" max="100">
+                                    <input type="range" class="form-range" id="yearsRangeInput" aria-labelledby="yearsInputLabel" value="60" min="0" max="100">
                                 </div>
                                 <div class="mb-2">
                                     <label id="distributionYearInputLabel" for="distributionYearInput" class="form-label">Start Distribution Year</label>
@@ -118,6 +118,28 @@
                                 </div>
                                 <div class="mb-3">
                                     <input type="range" class="form-range" id="distributionYearRangeInput" aria-labelledby="distributionYearInputLabel" value="40" min="0" max="100">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <form>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label id="valuationOutputLabel" for="valuationOutput" class="form-label">Estimated Valuation Before Distributions</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="text" class="form-control" id="valuationOutput" aria-labelledby="valuationOutputLabel" value="0" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label id="distributionOutputLabel" for="distributionOutput" class="form-label">Starting Annual Distribution</label>
+                                    
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="text" class="form-control" id="distributionOutput" aria-labelledby="distributionOutputLabel" value="0" readonly>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -154,6 +176,9 @@
                 const distributionYearInput = document.getElementById("distributionYearInput");
                 const distributionYearRangeInput = document.getElementById("distributionYearRangeInput");
 
+                const valuationOutput = document.getElementById("valuationOutput");
+                const distributionOutput = document.getElementById("distributionOutput");
+
                 const chart = new Chart(
                     interestGraphCanvas,
                     {
@@ -164,9 +189,15 @@
                     }
                 );
 
-                function updateChartWithDeviation() {
-                    const principle = principleInput.value * 1;
-                    let contribution = contributionInput.value * 1;
+                function formatMoney(value)
+                {
+                    return (value * 1.0).toLocaleString(undefined, { maximumFractionDigits: 0 })
+                }
+
+                function updateChartWithDeviation() 
+                {
+                    const principle = principleInput.underlyingValue * 1;
+                    let contribution = contributionInput.underlyingValue * 1;
                     const interest = 1 + (interestInput.value / 100.0);
                     const interestDeviation = interestDeviationInput.value / 100.0;
                     const interestAbove = interest + interestDeviation;
@@ -182,6 +213,12 @@
 
                     for(let i = 0; i <= years; ++i)
                     {
+                        if(i == distributionYear)
+                        {
+                            valuationOutput.value = formatMoney(currentValue);
+                            distributionOutput.value = formatMoney(currentValue * distributionPercent);
+                        }
+
                         if(i >= distributionYear)
                         {
                             currentValueAbove -= currentValueAbove * distributionPercent;
@@ -209,9 +246,10 @@
                     }
                 }
 
-                function updateChartWithoutDeviation() {
-                    const principle = principleInput.value * 1;
-                    let contribution = contributionInput.value * 1;
+                function updateChartWithoutDeviation() 
+                {
+                    const principle = principleInput.underlyingValue * 1;
+                    let contribution = contributionInput.underlyingValue * 1;
                     const interest = 1 + (interestInput.value / 100.0);
                     const interestDeviation = interestDeviationInput.value / 100.0;
                     const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
@@ -223,6 +261,12 @@
 
                     for(let i = 0; i <= years; ++i)
                     {
+                        if(i == distributionYear)
+                        {
+                            valuationOutput.value = formatMoney(currentValue);
+                            distributionOutput.value = formatMoney(currentValue * distributionPercent);
+                        }
+
                         if(i >= distributionYear)
                         {
                             currentValue -= currentValue * distributionPercent;
@@ -240,7 +284,8 @@
                     }
                 }
 
-                function updateChart() {
+                function updateChart()
+                {
                     const interestDeviation = interestDeviationInput.value / 100.0;
                     const years = yearsInput.value|0;
                     const distributionYear = distributionYearInput.value|0;
@@ -327,31 +372,63 @@
                     chart.update("none");
                 }
 
+                function onFieldExit(event)
+                {
+                    const field = event.target;
+
+                    field.underlyingValue = field.value * 1;
+                    field.value = formatMoney(field.value * 1);
+                }
+
+                function registerMoneyFormatter(field)
+                {
+                    field.addEventListener("focus", onFieldEnter);
+                    field.addEventListener("blur", onFieldExit);
+                    field.addEventListener("input", event => {
+                        field.underlyingValue = field.value;
+                    });
+
+                    field.value = field.value.replace(/[^0-9]/, "") * 1;
+                    field.dispatchEvent(new Event("blur"));
+                }
+
+                registerMoneyFormatter(principleInput);
+                registerMoneyFormatter(contributionInput);
+
                 updateChart();
-
-                function onChartEvent(event) {
-                    updateChart();
-                }
-
-                function onRangeEvent(dest, src) {
+                
+                function onRangeEvent(dest, src) 
+                {
                     dest.value = src.value;
+                    dest.dispatchEvent(new Event("blur"));
                     updateChart();
                 }
 
-                function registerRangePair(input0, input1) {
+                function registerRangePair(input0, input1) 
+                {
                     input0.addEventListener("input", event => onRangeEvent(input1, input0));
                     input1.addEventListener("input", event => onRangeEvent(input0, input1));
                 }
+                function onFieldEnter(event)
+                {
+                    const field = event.target;
+
+                    if(field.underlyingValue !== undefined)
+                    {
+                        field.value = field.underlyingValue;
+                    }
+                }
+
 
                 registerRangePair(principleInput, principleRangeInput);
                 registerRangePair(contributionInput, contributionRangeInput);
                 registerRangePair(yearsInput, yearsRangeInput);
                 registerRangePair(distributionYearInput, distributionYearRangeInput);
 
-                interestInput.addEventListener("input", onChartEvent);
-                interestDeviationInput.addEventListener("input", onChartEvent);
-                contributionIncreasePercentInput.addEventListener("input", onChartEvent);
-                distributionPercentInput.addEventListener("input", onChartEvent);
+                interestInput.addEventListener("input", updateChart);
+                interestDeviationInput.addEventListener("input", updateChart);
+                contributionIncreasePercentInput.addEventListener("input", updateChart);
+                distributionPercentInput.addEventListener("input", updateChart);
             });
         })();
     </script>
