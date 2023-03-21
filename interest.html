@@ -25,6 +25,13 @@
         // Disable Ad Personalization on this site.
         gtag('set', 'allow_ad_personalization_signals', false);
     </script>
+
+    <style>
+        canvas {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -45,13 +52,16 @@
                     <hr>
                     <form>
                         <div class="row">
-                            <div class="col-auto">
-                                <div class="mb-3">
+                            <div class="col col-12 col-sm-12 col-md">
+                                <div class="mb-4">
                                     <label id="principleInputLabel" for="principleInput" class="form-label">Principle</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
                                         <input type="text" class="form-control" id="principleInput" aria-labelledby="principleInputLabel" value="1000" required>
                                     </div>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="range" class="form-range" id="principleRangeInput" aria-labelledby="principleInputLabel" value="1000" min="0" max="5000000" required>
                                 </div>
                                 <div class="mb-3">
                                     <label id="contributionInputLabel" for="contributionInput" class="form-label">Annual Contribution</label>
@@ -64,7 +74,7 @@
                                     <input type="range" class="form-range" id="contributionRangeInput" aria-labelledby="contributionInputLabel" value="12000" min="0" max="250000" required>
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            <div class="col col-12 col-sm col-md">
                                 <div class="mb-3">
                                     <label id="interestInputLabel" for="interestInput" class="form-label">Annual Interest Rate</label>
                                     <div class="input-group">
@@ -87,7 +97,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            <div class="col col-12 col-sm col-md">
                                 <div class="mb-3">
                                     <label id="yearsInputLabel" for="yearsInput" class="form-label">Years</label>
                                     <input type="text" class="form-control" id="yearsInput" aria-labelledby="yearsInputLabel" value="40" required>
@@ -111,6 +121,7 @@
                 const interestGraphCanvas = document.getElementById("interestGraph");
 
                 const principleInput = document.getElementById("principleInput");
+                const principleRangeInput = document.getElementById("principleRangeInput");
                 const contributionInput = document.getElementById("contributionInput");
                 const contributionRangeInput = document.getElementById("contributionRangeInput");
                 const contributionIncreasePercentInput = document.getElementById("contributionIncreasePercentInput");
@@ -150,7 +161,7 @@
                     }
                 );
 
-                function updateChart() {
+                function updateChartWithDeviation() {
                     const principle = principleInput.value * 1;
                     let contribution = contributionInput.value * 1;
                     const interest = 1 + (interestInput.value / 100.0);
@@ -160,11 +171,6 @@
                     const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
                     const years = yearsInput.value|0;
 
-                    chart.data.labels = [ ];
-                    chart.data.datasets[0].data = [ ];
-                    chart.data.datasets[1].data = [ ];
-                    chart.data.datasets[2].data = [ ];
-                    
                     let currentValueAbove = principle;
                     let currentValue = principle;
                     let currentValueBelow = principle;
@@ -194,6 +200,82 @@
 
                         contribution *= contributionInterest;
                     }
+                }
+
+                function updateChartWithoutDeviation() {
+                    const principle = principleInput.value * 1;
+                    let contribution = contributionInput.value * 1;
+                    const interest = 1 + (interestInput.value / 100.0);
+                    const interestDeviation = interestDeviationInput.value / 100.0;
+                    const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
+                    const years = yearsInput.value|0;
+
+                    let currentValue = principle;
+
+                    console.log("Principle:", principle);
+                    console.log("Contribution:", contribution);
+                    console.log("Interest:", interest);
+                    console.log("Contribution Interest:", contributionInterest);
+                    console.log("Years:", years);
+
+                    for(let i = 0; i <= years; ++i)
+                    {
+                        chart.data.labels.push(i);
+                        chart.data.datasets[0].data.push(currentValue);
+
+                        currentValue += contribution;
+                        currentValue *= interest;
+
+                        contribution *= contributionInterest;
+                    }
+                }
+
+                function updateChart() {
+                    const principle = principleInput.value * 1;
+                    let contribution = contributionInput.value * 1;
+                    const interest = 1 + (interestInput.value / 100.0);
+                    const interestDeviation = interestDeviationInput.value / 100.0;
+                    const interestAbove = interest + interestDeviation;
+                    const interestBelow = interest - interestDeviation;
+                    const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
+                    const years = yearsInput.value|0;
+
+                    chart.data.labels = [ ];
+
+                    if(interestDeviationInput.value != 0)
+                    {
+                        chart.data.datasets = [
+                            {
+                                label: "Positive Deviation Over Time",
+                                data: [ ],
+                                tension: 0.3
+                            },
+                            {
+                                label: "Valulation Over Time",
+                                data: [ ],
+                                tension: 0.3
+                            },
+                            {
+                                label: "Negative Deviation Over Time",
+                                data: [ ],
+                                tension: 0.3
+                            }
+                        ];
+
+                        updateChartWithDeviation();
+                    }
+                    else
+                    {
+                        chart.data.datasets = [
+                            {
+                                label: "Valulation Over Time",
+                                data: [ ],
+                                tension: 0.3
+                            }
+                        ];
+
+                        updateChartWithoutDeviation();
+                    }
 
                     chart.update();
                 }
@@ -201,6 +283,12 @@
                 updateChart();
 
                 principleInput.addEventListener("input", event => {
+                    principleRangeInput.value = principleInput.value;
+                    updateChart();
+                });
+
+                principleRangeInput.addEventListener("input", event => {
+                    principleInput.value = principleRangeInput.value;
                     updateChart();
                 });
 
