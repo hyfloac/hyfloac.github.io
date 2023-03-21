@@ -53,7 +53,7 @@
                     <form>
                         <div class="row">
                             <div class="col col-12 col-sm-12 col-md">
-                                <div class="mb-4">
+                                <div class="mb-2">
                                     <label id="principleInputLabel" for="principleInput" class="form-label">Principle</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
@@ -61,9 +61,9 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <input type="range" class="form-range" id="principleRangeInput" aria-labelledby="principleInputLabel" value="1000" min="0" max="5000000" required>
+                                    <input type="range" class="form-range" id="principleRangeInput" aria-labelledby="principleInputLabel" value="1000" min="0" max="5000000">
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-2">
                                     <label id="contributionInputLabel" for="contributionInput" class="form-label">Annual Contribution</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <input type="range" class="form-range" id="contributionRangeInput" aria-labelledby="contributionInputLabel" value="12000" min="0" max="250000" required>
+                                    <input type="range" class="form-range" id="contributionRangeInput" aria-labelledby="contributionInputLabel" value="12000" min="0" max="50000">
                                 </div>
                             </div>
                             <div class="col col-12 col-sm col-md">
@@ -96,11 +96,28 @@
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
+                                <div class="mb-3">
+                                    <label id="distributionPercentInputLabel" for="distributionPercentInput" class="form-label">Annual Distribution Percent</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="distributionPercentInput" aria-labelledby="distributionPercentInputLabel" value="3" required>
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col col-12 col-sm col-md">
-                                <div class="mb-3">
+                                <div class="mb-2">
                                     <label id="yearsInputLabel" for="yearsInput" class="form-label">Years</label>
-                                    <input type="text" class="form-control" id="yearsInput" aria-labelledby="yearsInputLabel" value="40" required>
+                                    <input type="text" class="form-control" id="yearsInput" aria-labelledby="yearsInputLabel" value="80" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="range" class="form-range" id="yearsRangeInput" aria-labelledby="yearsInputLabel" value="80" min="0" max="100">
+                                </div>
+                                <div class="mb-2">
+                                    <label id="distributionYearInputLabel" for="distributionYearInput" class="form-label">Start Distribution Year</label>
+                                    <input type="text" class="form-control" id="distributionYearInput" aria-labelledby="distributionYearInputLabel" value="40" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="range" class="form-range" id="distributionYearRangeInput" aria-labelledby="distributionYearInputLabel" value="40" min="0" max="100">
                                 </div>
                             </div>
                         </div>
@@ -122,42 +139,28 @@
 
                 const principleInput = document.getElementById("principleInput");
                 const principleRangeInput = document.getElementById("principleRangeInput");
+                
                 const contributionInput = document.getElementById("contributionInput");
                 const contributionRangeInput = document.getElementById("contributionRangeInput");
+
                 const contributionIncreasePercentInput = document.getElementById("contributionIncreasePercentInput");
                 const interestInput = document.getElementById("interestInput");
                 const interestDeviationInput = document.getElementById("interestDeviationInput");
+                const distributionPercentInput = document.getElementById("distributionPercentInput");
+
                 const yearsInput = document.getElementById("yearsInput");
+                const yearsRangeInput = document.getElementById("yearsRangeInput");
+
+                const distributionYearInput = document.getElementById("distributionYearInput");
+                const distributionYearRangeInput = document.getElementById("distributionYearRangeInput");
 
                 const chart = new Chart(
                     interestGraphCanvas,
                     {
                         type: "line",
                         options: {
-
+                            tension: 0.3
                         },
-                        data: {
-                            labels: [
-                                1, 2, 3, 4, 5
-                            ],
-                            datasets: [
-                                {
-                                    label: "Positive Deviation Over Time",
-                                    data: [ 10000, 110000, 1210000, 13310000, 14641000 ],
-                                    tension: 0.3
-                                },
-                                {
-                                    label: "Valulation Over Time",
-                                    data: [ 10000, 110000, 1210000, 13310000, 14641000 ],
-                                    tension: 0.3
-                                },
-                                {
-                                    label: "Negative Deviation Over Time",
-                                    data: [ 10000, 110000, 1210000, 13310000, 14641000 ],
-                                    tension: 0.3
-                                }
-                            ]
-                        }
                     }
                 );
 
@@ -169,36 +172,40 @@
                     const interestAbove = interest + interestDeviation;
                     const interestBelow = interest - interestDeviation;
                     const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
+                    const distributionPercent = distributionPercentInput.value / 100.0;
                     const years = yearsInput.value|0;
+                    const distributionYear = distributionYearInput.value|0;
 
                     let currentValueAbove = principle;
                     let currentValue = principle;
                     let currentValueBelow = principle;
 
-                    console.log("Principle:", principle);
-                    console.log("Contribution:", contribution);
-                    console.log("Interest Above:", interestAbove);
-                    console.log("Interest:", interest);
-                    console.log("Interest Below:", interestBelow);
-                    console.log("Contribution Interest:", contributionInterest);
-                    console.log("Years:", years);
-
                     for(let i = 0; i <= years; ++i)
                     {
+                        if(i >= distributionYear)
+                        {
+                            currentValueAbove -= currentValueAbove * distributionPercent;
+                            currentValue -= currentValue * distributionPercent;
+                            currentValueBelow -= currentValueBelow * distributionPercent;
+                        }
+
                         chart.data.labels.push(i);
                         chart.data.datasets[0].data.push(currentValueAbove);
                         chart.data.datasets[1].data.push(currentValue);
                         chart.data.datasets[2].data.push(currentValueBelow);
 
-                        currentValueAbove += contribution;
-                        currentValue += contribution;
-                        currentValueBelow  += contribution;
+                        if(i < distributionYear)
+                        {
+                            currentValueAbove += contribution;
+                            currentValue += contribution;
+                            currentValueBelow  += contribution;
+                            
+                            contribution *= contributionInterest;
+                        }
 
                         currentValueAbove *= interestAbove;
                         currentValue *= interest;
                         currentValueBelow *= interestBelow;
-
-                        contribution *= contributionInterest;
                     }
                 }
 
@@ -208,57 +215,78 @@
                     const interest = 1 + (interestInput.value / 100.0);
                     const interestDeviation = interestDeviationInput.value / 100.0;
                     const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
+                    const distributionPercent = distributionPercentInput.value / 100.0;
                     const years = yearsInput.value|0;
+                    const distributionYear = distributionYearInput.value|0;
 
                     let currentValue = principle;
 
-                    console.log("Principle:", principle);
-                    console.log("Contribution:", contribution);
-                    console.log("Interest:", interest);
-                    console.log("Contribution Interest:", contributionInterest);
-                    console.log("Years:", years);
-
                     for(let i = 0; i <= years; ++i)
                     {
+                        if(i >= distributionYear)
+                        {
+                            currentValue -= currentValue * distributionPercent;
+                        }
+
                         chart.data.labels.push(i);
                         chart.data.datasets[0].data.push(currentValue);
 
-                        currentValue += contribution;
+                        if(i < distributionYear)
+                        {
+                            currentValue += contribution;
+                            contribution *= contributionInterest;
+                        }
                         currentValue *= interest;
-
-                        contribution *= contributionInterest;
                     }
                 }
 
                 function updateChart() {
-                    const principle = principleInput.value * 1;
-                    let contribution = contributionInput.value * 1;
-                    const interest = 1 + (interestInput.value / 100.0);
                     const interestDeviation = interestDeviationInput.value / 100.0;
-                    const interestAbove = interest + interestDeviation;
-                    const interestBelow = interest - interestDeviation;
-                    const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
                     const years = yearsInput.value|0;
+                    const distributionYear = distributionYearInput.value|0;
+
+                    const valuationColor = "rgb(187, 27, 20)";
+                    const valuationDistributionColor = "rgb(68, 228, 235)";
+                    const inflationColor = "rgba(180, 90, 13, 0.3)";
 
                     chart.data.labels = [ ];
 
+                    let inflationIndex;
+
                     if(interestDeviationInput.value != 0)
                     {
+                        inflationIndex = 3;
+
                         chart.data.datasets = [
                             {
                                 label: "Positive Deviation Over Time",
                                 data: [ ],
-                                tension: 0.3
+                                borderColor: "rgb(0, 45, 79)",
+                                segment: {
+                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? "rgb(255, 210, 176)" : undefined
+                                }
                             },
                             {
                                 label: "Valulation Over Time",
                                 data: [ ],
-                                tension: 0.3
+                                borderColor: valuationColor,
+                                segment: {
+                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? valuationDistributionColor : undefined
+                                }
                             },
                             {
                                 label: "Negative Deviation Over Time",
                                 data: [ ],
-                                tension: 0.3
+                                borderColor: "rgb(19, 134, 135)",
+                                segment: {
+                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? "rgb(235, 121, 120)" : undefined
+                                }
+                            },
+                            {
+                                label: "Inflation of $1,000,000",
+                                data: [ ],
+                                borderColor: inflationColor,
+                                borderDash: [6, 6]
                             }
                         ];
 
@@ -266,57 +294,64 @@
                     }
                     else
                     {
+                        inflationIndex = 1;
+
                         chart.data.datasets = [
                             {
                                 label: "Valulation Over Time",
                                 data: [ ],
-                                tension: 0.3
+                                borderColor: valuationColor,
+                                segment: {
+                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? valuationDistributionColor : undefined
+                                }
+                            },
+                            {
+                                label: "Inflation of $1,000,000",
+                                data: [ ],
+                                borderColor: inflationColor,
+                                borderDash: [6, 6]
                             }
                         ];
 
                         updateChartWithoutDeviation();
                     }
 
-                    chart.update();
+                    let inflationTracker = 1000000;
+
+                    for(let i = 0; i <= years; ++i)
+                    {
+                        chart.data.datasets[inflationIndex].data.push(inflationTracker);
+                        inflationTracker *= 1.02;
+                    }
+
+                    chart.update("none");
                 }
 
                 updateChart();
 
-                principleInput.addEventListener("input", event => {
-                    principleRangeInput.value = principleInput.value;
+                function onChartEvent(event) {
                     updateChart();
-                });
+                }
 
-                principleRangeInput.addEventListener("input", event => {
-                    principleInput.value = principleRangeInput.value;
+                function onRangeEvent(dest, src) {
+                    dest.value = src.value;
                     updateChart();
-                });
+                }
 
-                contributionInput.addEventListener("input", event => {
-                    contributionRangeInput.value = contributionInput.value;
-                    updateChart();
-                });
+                function registerRangePair(input0, input1) {
+                    input0.addEventListener("input", event => onRangeEvent(input1, input0));
+                    input1.addEventListener("input", event => onRangeEvent(input0, input1));
+                }
 
-                contributionRangeInput.addEventListener("input", event => {
-                    contributionInput.value = contributionRangeInput.value;
-                    updateChart();
-                });
+                registerRangePair(principleInput, principleRangeInput);
+                registerRangePair(contributionInput, contributionRangeInput);
+                registerRangePair(yearsInput, yearsRangeInput);
+                registerRangePair(distributionYearInput, distributionYearRangeInput);
 
-                interestInput.addEventListener("input", event => {
-                    updateChart();
-                });
-
-                interestDeviationInput.addEventListener("input", event => {
-                    updateChart();
-                });
-
-                contributionIncreasePercentInput.addEventListener("input", event => {
-                    updateChart();
-                });
-
-                yearsInput.addEventListener("input", event => {
-                    updateChart();
-                });
+                interestInput.addEventListener("input", onChartEvent);
+                interestDeviationInput.addEventListener("input", onChartEvent);
+                contributionIncreasePercentInput.addEventListener("input", onChartEvent);
+                distributionPercentInput.addEventListener("input", onChartEvent);
             });
         })();
     </script>
