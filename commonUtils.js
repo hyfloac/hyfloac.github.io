@@ -22,8 +22,10 @@ function onMoneyFieldExit(event)
 {
     const field = event.target;
 
-    field.underlyingValue = field.value * 1;
-    field.value = formatMoney(field.value * 1);
+    const value = field.value.replace(/[^0-9]/, "") * 1;
+
+    field.underlyingValue = value;
+    field.value = formatMoney(value);
 }
 
 function registerMoneyFormatter(field)

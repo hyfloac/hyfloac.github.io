@@ -56,71 +56,41 @@
                         <div class="row">
                             <div class="col col-12 col-sm-12 col-md">
                                 <div class="mb-2">
-                                    <label id="principleInputLabel" for="principleInput" class="form-label">Principle</label>
+                                    <label id="salaryInputLabel" for="salaryInput" class="form-label">Annual Salary</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
-                                        <input type="text" class="form-control" id="principleInput" aria-labelledby="principleInputLabel" value="1000" required>
+                                        <input type="text" class="form-control" id="salaryInput" aria-labelledby="salaryInputLabel" value="100000" required>
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <input type="range" class="form-range" id="principleRangeInput" aria-labelledby="principleInputLabel" value="1000" min="0" max="5000000">
                                 </div>
                                 <div class="mb-2">
-                                    <label id="contributionInputLabel" for="contributionInput" class="form-label">Annual Contribution</label>
+                                    <label id="newSalaryInputLabel" for="newSalaryInput" class="form-label">New Annual Salary</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
-                                        <input type="text" class="form-control" id="contributionInput" aria-labelledby="contributionInputLabel" value="12000" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <input type="range" class="form-range" id="contributionRangeInput" aria-labelledby="contributionInputLabel" value="12000" min="0" max="50000">
-                                </div>
-                            </div>
-                            <div class="col col-12 col-sm col-md">
-                                <div class="mb-3">
-                                    <label id="interestInputLabel" for="interestInput" class="form-label">Annual Interest Rate</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="interestInput" aria-labelledby="interestInputLabel" value="8" required>
-                                        <span class="input-group-text">%</span>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label id="interestDeviationInputLabel" for="interestDeviationInput" class="form-label">Interest Deviation</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="interestDeviationInput" aria-labelledby="interestDeviationInputLabel" value="2" required>
-                                        <span class="input-group-text">%</span>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label id="contributionIncreasePercentInputLabel" for="contributionIncreasePercentInput" class="form-label">Contribution Increase Per Year</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="contributionIncreasePercentInput" aria-labelledby="contributionIncreasePercentInputLabel" value="5" required>
-                                        <span class="input-group-text">%</span>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label id="distributionPercentInputLabel" for="distributionPercentInput" class="form-label">Annual Distribution Percent</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="distributionPercentInput" aria-labelledby="distributionPercentInputLabel" value="3" required>
-                                        <span class="input-group-text">%</span>
+                                        <input type="text" class="form-control" id="newSalaryInput" aria-labelledby="newSalaryInputLabel" value="100000" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="col col-12 col-sm col-md">
-                                <div class="mb-2">
-                                    <label id="yearsInputLabel" for="yearsInput" class="form-label">Years</label>
-                                    <input type="text" class="form-control" id="yearsInput" aria-labelledby="yearsInputLabel" value="60" required>
+                                <label class="form-label">Federal Tax Rates</label>
+                                <div class="row">
+                                    <div class="col col-3">
+                                        <label class="form-label">Tax Rate</label>
+                                    </div>
+                                    <div class="col col-8">
+                                        <label class="form-label">Taxable Income Bracket</label>
+                                    </div>
+                                    <div class="col col-1"></div>
                                 </div>
-                                <div class="mb-3">
-                                    <input type="range" class="form-range" id="yearsRangeInput" aria-labelledby="yearsInputLabel" value="60" min="0" max="100">
+                                <div class="row">
+                                    <div id="federalTaxRateBracketsDiv" class="col col-3">
+                                    </div>
+                                    <div id="federalTaxableIncomeBracketsDiv" class="col col-8">
+                                    </div>
+                                    <div id="federalTaxRemoveDiv" class="col col-1">
+
+                                    </div>
                                 </div>
-                                <div class="mb-2">
-                                    <label id="distributionYearInputLabel" for="distributionYearInput" class="form-label">Start Distribution Year</label>
-                                    <input type="text" class="form-control" id="distributionYearInput" aria-labelledby="distributionYearInputLabel" value="40" required>
-                                </div>
-                                <div class="mb-3">
-                                    <input type="range" class="form-range" id="distributionYearRangeInput" aria-labelledby="distributionYearInputLabel" value="40" min="0" max="100">
-                                </div>
+                                <button id="addFederalBacketButton" type="button" class="btn btn-secondary">Add Bracket</button>
                             </div>
                         </div>
                     </form>
@@ -129,268 +99,242 @@
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
-                                    <label id="valuationOutputLabel" for="valuationOutput" class="form-label">Estimated Valuation Before Distributions</label>
+                                    <label id="taxesOutputLabel" for="taxesOutput" class="form-label">Total Taxes Paid</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
-                                        <input type="text" class="form-control" id="valuationOutput" aria-labelledby="valuationOutputLabel" value="0" readonly>
+                                        <input type="text" class="form-control" id="taxesOutput" aria-labelledby="taxesOutputLabel" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label id="distributionOutputLabel" for="distributionOutput" class="form-label">Starting Annual Distribution</label>
+                                    <label id="postIncomeOutputLabel" for="postIncomeOutput" class="form-label">Post Tax Income</label>
                                     
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
-                                        <input type="text" class="form-control" id="distributionOutput" aria-labelledby="distributionOutputLabel" value="0" readonly>
+                                        <input type="text" class="form-control" id="postIncomeOutput" aria-labelledby="postIncomeOutputLabel" value="0" readonly>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
                     <hr>
-                    <div class="d-flex p-2">
-                        <canvas id="interestGraph"></canvas>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-
         (function() {
             "use strict";
             window.addEventListener("load", function() {
+                const federalTaxRateBracketId = "federalTaxRateBracketInput";
+                const federalTaxableIncomeBracketId = "federalTaxableIncomeBracketInput";
+                const federalTaxRemoveId = "federalTaxRemoveButton";
+
                 const interestGraphCanvas = document.getElementById("interestGraph");
 
-                const principleInput = document.getElementById("principleInput");
-                const principleRangeInput = document.getElementById("principleRangeInput");
+                const federalTaxRateBracketsDiv = document.getElementById("federalTaxRateBracketsDiv");
+                const federalTaxableIncomeBracketsDiv = document.getElementById("federalTaxableIncomeBracketsDiv");
+                const federalTaxRemoveDiv = document.getElementById("federalTaxRemoveDiv");
+
+                const addFederalBacketButton = document.getElementById("addFederalBacketButton");
+
+                const salaryInput = document.getElementById("salaryInput");
+                const newSalaryInput = document.getElementById("newSalaryInput");
+
+                const taxesOutput = document.getElementById("taxesOutput");
+                const postIncomeOutput = document.getElementById("postIncomeOutput");
+
+                const percentInputGroupText = document.createElement("span");
+                percentInputGroupText.className = "input-group-text";
+                percentInputGroupText.innerText = "%";
+                const dollarInputGroupText = document.createElement("span");
+                dollarInputGroupText.className = "input-group-text";
+                dollarInputGroupText.innerText = "$";
+
+                const taxInputGroupDiv = document.createElement("div");
+                taxInputGroupDiv.className = "input-group mb-3";
                 
-                const contributionInput = document.getElementById("contributionInput");
-                const contributionRangeInput = document.getElementById("contributionRangeInput");
+                const taxInput = document.createElement("input");
+                taxInput.type = "text";
+                taxInput.className = "form-control";
 
-                const contributionIncreasePercentInput = document.getElementById("contributionIncreasePercentInput");
-                const interestInput = document.getElementById("interestInput");
-                const interestDeviationInput = document.getElementById("interestDeviationInput");
-                const distributionPercentInput = document.getElementById("distributionPercentInput");
+                const removeTaxButton = document.createElement("button");
+                removeTaxButton.type = "button";
+                removeTaxButton.className = "btn btn-danger mb-3";
+                removeTaxButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16"><path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg>';
 
-                const yearsInput = document.getElementById("yearsInput");
-                const yearsRangeInput = document.getElementById("yearsRangeInput");
+                let federalTaxIndex = 0;
 
-                const distributionYearInput = document.getElementById("distributionYearInput");
-                const distributionYearRangeInput = document.getElementById("distributionYearRangeInput");
-
-                const valuationOutput = document.getElementById("valuationOutput");
-                const distributionOutput = document.getElementById("distributionOutput");
-
-                const chart = new Chart(
-                    interestGraphCanvas,
-                    {
-                        type: "line",
-                        options: {
-                            tension: 0.3,
-                            interaction: {
-                                intersect: false,
-                                mode: "nearest",
-                                axis: "x"
-                            }
-                        },
+                const globalState = loadState(() => {
+                    return {
+                        salary: 100000,
+                        newSalary: 125000,
+                        federalTaxBrackets: []
                     }
-                );
+                });
+                reloadFromState(globalState);
 
-                function updateChartWithDeviation() 
+                function onFederalTaxInput(event)
                 {
-                    const principle = principleInput.underlyingValue * 1;
-                    let contribution = contributionInput.underlyingValue * 1;
-                    const interest = 1 + (interestInput.value / 100.0);
-                    const interestDeviation = interestDeviationInput.value / 100.0;
-                    const interestAbove = interest + interestDeviation;
-                    const interestBelow = interest - interestDeviation;
-                    const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
-                    const distributionPercent = distributionPercentInput.value / 100.0;
-                    const years = yearsInput.value|0;
-                    const distributionYear = distributionYearInput.value|0;
+                    globalState.federalTaxBrackets = [];
 
-                    let currentValueAbove = principle;
-                    let currentValue = principle;
-                    let currentValueBelow = principle;
-
-                    for(let i = 0; i <= years; ++i)
+                    for(let i = 0; i < federalTaxIndex; ++i)
                     {
-                        if(i == distributionYear || (i == years && distributionYear >= years))
+                        const taxRate = document.getElementById(federalTaxRateBracketId + i);
+                        const taxableIncome = document.getElementById(federalTaxableIncomeBracketId + i);
+
+                        let income = taxableIncome.underlyingValue;
+                        if(taxableIncome.id === event.target.id)
                         {
-                            valuationOutput.value = formatMoney(currentValue);
-                            distributionOutput.value = formatMoney(currentValue * distributionPercent);
+                            income = taxableIncome.value;
                         }
 
-                        if(i >= distributionYear)
-                        {
-                            currentValueAbove -= currentValueAbove * distributionPercent;
-                            currentValue -= currentValue * distributionPercent;
-                            currentValueBelow -= currentValueBelow * distributionPercent;
-                        }
-
-                        chart.data.labels.push(i);
-                        chart.data.datasets[0].data.push(currentValueAbove);
-                        chart.data.datasets[1].data.push(currentValue);
-                        chart.data.datasets[2].data.push(currentValueBelow);
-
-                        if(i < distributionYear)
-                        {
-                            currentValueAbove += contribution;
-                            currentValue += contribution;
-                            currentValueBelow  += contribution;
-                            
-                            contribution *= contributionInterest;
-                        }
-
-                        currentValueAbove *= interestAbove;
-                        currentValue *= interest;
-                        currentValueBelow *= interestBelow;
+                        globalState.federalTaxBrackets.push({ taxRate: taxRate.value|0, taxableIncome: income|0 });
                     }
+
+                    saveState(globalState);
+
+                    handleTaxes();
                 }
 
-                function updateChartWithoutDeviation() 
+                function addFederalTaxBracketWithValue(taxRate, taxableIncome)
                 {
-                    const principle = principleInput.underlyingValue * 1;
-                    let contribution = contributionInput.underlyingValue * 1;
-                    const interest = 1 + (interestInput.value / 100.0);
-                    const interestDeviation = interestDeviationInput.value / 100.0;
-                    const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
-                    const distributionPercent = distributionPercentInput.value / 100.0;
-                    const years = yearsInput.value|0;
-                    const distributionYear = distributionYearInput.value|0;
+                    const inputGroupDiv0 = taxInputGroupDiv.cloneNode();
 
-                    let currentValue = principle;
+                    const taxRateInput = taxInput.cloneNode();
+                    taxRateInput.id = federalTaxRateBracketId + federalTaxIndex;
+                    taxRateInput.addEventListener("input", onFederalTaxInput);
+                    taxRateInput.value = taxRate;
 
-                    for(let i = 0; i <= years; ++i)
-                    {
-                        if(i == distributionYear || (i == years && distributionYear >= years))
+                    inputGroupDiv0.appendChild(taxRateInput);
+                    inputGroupDiv0.appendChild(percentInputGroupText.cloneNode(true));
+                    federalTaxRateBracketsDiv.appendChild(inputGroupDiv0);
+                    
+                    const inputGroupDiv1 = taxInputGroupDiv.cloneNode();
+
+                    const taxableIncomeInput = taxInput.cloneNode();
+                    taxableIncomeInput.id = federalTaxableIncomeBracketId + federalTaxIndex;
+                    taxableIncomeInput.addEventListener("input", onFederalTaxInput);
+                    taxableIncomeInput.value = taxableIncome;
+                    registerMoneyFormatter(taxableIncomeInput);
+
+                    inputGroupDiv1.appendChild(dollarInputGroupText.cloneNode(true));
+                    inputGroupDiv1.appendChild(taxableIncomeInput);
+                    federalTaxableIncomeBracketsDiv.appendChild(inputGroupDiv1);
+                    
+                    const currentIndex = federalTaxIndex;
+
+                    const removeButton = removeTaxButton.cloneNode(true);
+                    removeButton.id = federalTaxRemoveId + federalTaxIndex;
+                    removeButton.addEventListener("click", () => {
+                        federalTaxRateBracketsDiv.removeChild(inputGroupDiv0);
+                        federalTaxableIncomeBracketsDiv.removeChild(inputGroupDiv1);
+                        federalTaxRemoveDiv.removeChild(removeButton);
+
+                        for(let i = currentIndex + 1; i < federalTaxIndex; ++i)
                         {
-                            valuationOutput.value = formatMoney(currentValue);
-                            distributionOutput.value = formatMoney(currentValue * distributionPercent);
+                            const taxRate = document.getElementById(federalTaxRateBracketId + i);
+                            const taxableIncome = document.getElementById(federalTaxableIncomeBracketId + i);
+                            const remove = document.getElementById(federalTaxRemoveId + i);
+
+                            taxRate.id = federalTaxRateBracketId + (i - 1);
+                            taxableIncome.id = federalTaxableIncomeBracketId + (i - 1);
+                            remove.id = federalTaxRemoveId + (i - 1);
                         }
 
-                        if(i >= distributionYear)
-                        {
-                            currentValue -= currentValue * distributionPercent;
-                        }
+                        --federalTaxIndex;
 
-                        chart.data.labels.push(i);
-                        chart.data.datasets[0].data.push(currentValue);
+                        onFederalTaxInput();
+                    });
 
-                        if(i < distributionYear)
-                        {
-                            currentValue += contribution;
-                            contribution *= contributionInterest;
-                        }
-                        currentValue *= interest;
-                    }
+                    federalTaxRemoveDiv.appendChild(removeButton);
+
+                    ++federalTaxIndex;
                 }
 
-                function updateChart()
+                function addFederalTaxBracket()
                 {
-                    const interestDeviation = interestDeviationInput.value / 100.0;
-                    const years = yearsInput.value|0;
-                    const distributionYear = distributionYearInput.value|0;
-
-                    const valuationColor = "rgb(187, 27, 20)";
-                    const valuationDistributionColor = "rgb(68, 228, 235)";
-                    const inflationColor = "rgba(180, 90, 13, 0.3)";
-
-                    chart.data.labels = [ ];
-
-                    let inflationIndex;
-
-                    if(interestDeviationInput.value != 0)
-                    {
-                        inflationIndex = 3;
-
-                        chart.data.datasets = [
-                            {
-                                label: "Positive Deviation Over Time",
-                                data: [ ],
-                                borderColor: "rgb(0, 45, 79)",
-                                segment: {
-                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? "rgb(255, 210, 176)" : undefined
-                                }
-                            },
-                            {
-                                label: "Valulation Over Time",
-                                data: [ ],
-                                borderColor: valuationColor,
-                                segment: {
-                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? valuationDistributionColor : undefined
-                                }
-                            },
-                            {
-                                label: "Negative Deviation Over Time",
-                                data: [ ],
-                                borderColor: "rgb(19, 134, 135)",
-                                segment: {
-                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? "rgb(235, 121, 120)" : undefined
-                                }
-                            },
-                            {
-                                label: "Inflation of $1,000,000",
-                                data: [ ],
-                                borderColor: inflationColor,
-                                borderDash: [6, 6]
-                            }
-                        ];
-
-                        updateChartWithDeviation();
-                    }
-                    else
-                    {
-                        inflationIndex = 1;
-
-                        chart.data.datasets = [
-                            {
-                                label: "Valulation Over Time",
-                                data: [ ],
-                                borderColor: valuationColor,
-                                segment: {
-                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? valuationDistributionColor : undefined
-                                }
-                            },
-                            {
-                                label: "Inflation of $1,000,000",
-                                data: [ ],
-                                borderColor: inflationColor,
-                                borderDash: [6, 6]
-                            }
-                        ];
-
-                        updateChartWithoutDeviation();
-                    }
-
-                    let inflationTracker = 1000000;
-
-                    for(let i = 0; i <= years; ++i)
-                    {
-                        chart.data.datasets[inflationIndex].data.push(inflationTracker);
-                        inflationTracker *= 1.02;
-                    }
-
-                    chart.update("none");
+                    addFederalTaxBracketWithValue(null, null);
                 }
 
-                registerMoneyFormatter(principleInput);
-                registerMoneyFormatter(contributionInput);
+                if(federalTaxIndex == 0)
+                {
+                    addFederalTaxBracket();
+                }
 
-                updateChart();
-                
-                registerRangePair(principleInput, principleRangeInput, updateChart);
-                registerRangePair(contributionInput, contributionRangeInput, updateChart);
-                registerRangePair(yearsInput, yearsRangeInput, updateChart);
-                registerRangePair(distributionYearInput, distributionYearRangeInput, updateChart);
+                addFederalBacketButton.addEventListener("click", addFederalTaxBracket);
 
-                interestInput.addEventListener("input", updateChart);
-                interestDeviationInput.addEventListener("input", updateChart);
-                contributionIncreasePercentInput.addEventListener("input", updateChart);
-                distributionPercentInput.addEventListener("input", updateChart);
+                registerMoneyFormatter(salaryInput);
+                registerMoneyFormatter(newSalaryInput);
+
+                salaryInput.addEventListener("input", event => {
+                    globalState.salary = event.target.value|0;
+                    saveState(globalState);
+                });
+                newSalaryInput.addEventListener("input", event => {
+                    globalState.newSalary = event.target.value|0;
+                    saveState(globalState);
+                });
+
+                function handleTaxes()
+                {
+                    const taxesAndIncome = computeTaxAndIncome(globalState.salary, globalState.federalTaxBrackets);
+
+                    taxesOutput.value = formatMoneyWithCents(taxesAndIncome.tax);
+                    postIncomeOutput.value = formatMoneyWithCents(taxesAndIncome.income);
+                }
+
+                function reloadFromState(state)
+                {
+                    salaryInput.value = state.salary;
+                    newSalaryInput.value = state.newSalary;
+
+                    for(let i = 0; i < state.federalTaxBrackets.length; ++i)
+                    {
+                        addFederalTaxBracketWithValue(state.federalTaxBrackets[i].taxRate, state.federalTaxBrackets[i].taxableIncome);
+                    }
+
+                    handleTaxes();
+                }
             });
         })();
+
+        function loadState(init)
+        {
+            let data = window.localStorage.getItem("data");
+
+            if(data === null)
+            {
+                return init();
+            }
+
+            return JSON.parse(data);
+        }
+
+        function saveState(state)
+        {
+            window.localStorage.setItem("data", JSON.stringify(state));
+        }
+
+        function computeTaxAndIncome(income, taxBrackets)
+        {
+            let currentIncome = income;
+            let currentTax = 0;
+
+            for(let i = 0; i < taxBrackets.length; ++i)
+            {
+                if(income >= taxBrackets[i].taxableIncome)
+                {
+                    const upperBound = i == taxBrackets.length - 1 ? Infinity : taxBrackets[i + 1].taxableIncome - 1;
+
+                    const tax = (taxBrackets[i] / 100.0) * Math.min(currentIncome, upperBound);
+                    currentTax += tax;
+                    currentIncome -= upperBound;
+                }
+            }
+
+            return { tax: currentTax, income: income - currentTax };
+        }
     </script>
 </body>
 </html>
