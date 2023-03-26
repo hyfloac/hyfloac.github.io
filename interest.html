@@ -184,7 +184,12 @@
                     {
                         type: "line",
                         options: {
-                            tension: 0.3
+                            tension: 0.3,
+                            interaction: {
+                                intersect: false,
+                                mode: "nearest",
+                                axis: "x"
+                            }
                         },
                     }
                 );
@@ -213,7 +218,7 @@
 
                     for(let i = 0; i <= years; ++i)
                     {
-                        if(i == distributionYear)
+                        if(i == distributionYear || (i == years && distributionYear >= years))
                         {
                             valuationOutput.value = formatMoney(currentValue);
                             distributionOutput.value = formatMoney(currentValue * distributionPercent);
@@ -261,7 +266,7 @@
 
                     for(let i = 0; i <= years; ++i)
                     {
-                        if(i == distributionYear)
+                        if(i == distributionYear || (i == years && distributionYear >= years))
                         {
                             valuationOutput.value = formatMoney(currentValue);
                             distributionOutput.value = formatMoney(currentValue * distributionPercent);
@@ -409,16 +414,14 @@
                     input0.addEventListener("input", event => onRangeEvent(input1, input0));
                     input1.addEventListener("input", event => onRangeEvent(input0, input1));
                 }
+
                 function onFieldEnter(event)
                 {
-                    const field = event.target;
-
-                    if(field.underlyingValue !== undefined)
+                    if(event.target.underlyingValue !== undefined)
                     {
-                        field.value = field.underlyingValue;
+                        event.target.value = event.target.underlyingValue;
                     }
                 }
-
 
                 registerRangePair(principleInput, principleRangeInput);
                 registerRangePair(contributionInput, contributionRangeInput);
