@@ -186,7 +186,7 @@
                         let income = taxableIncome.underlyingValue;
                         if(taxableIncome.id === event.target.id)
                         {
-                            income = taxableIncome.value;
+                            income = taxableIncome.value.replace(/[^0-9]/, "");
                         }
 
                         globalState.federalTaxBrackets.push({ taxRate: taxRate.value|0, taxableIncome: income|0 });
@@ -270,10 +270,12 @@
                 salaryInput.addEventListener("input", event => {
                     globalState.salary = event.target.value|0;
                     saveState(globalState);
+                    handleTaxes();
                 });
                 newSalaryInput.addEventListener("input", event => {
                     globalState.newSalary = event.target.value|0;
                     saveState(globalState);
+                    handleTaxes();
                 });
 
                 function handleTaxes()
@@ -327,9 +329,13 @@
                 {
                     const upperBound = i == taxBrackets.length - 1 ? Infinity : taxBrackets[i + 1].taxableIncome - 1;
 
-                    const tax = (taxBrackets[i] / 100.0) * Math.min(currentIncome, upperBound);
+                    const tax = (taxBrackets[i].taxRate / 100.0) * Math.min(currentIncome, upperBound);
                     currentTax += tax;
                     currentIncome -= upperBound;
+                }
+                else
+                {
+                    break;
                 }
             }
 
