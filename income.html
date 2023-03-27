@@ -518,6 +518,7 @@
                     if(urlSearchParams.has("data"))
                     {
                         data = atob(urlSearchParams.get("data"));
+                        window.localStorage.setItem("data", data);
                     }
                     else
                     {
