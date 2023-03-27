@@ -2,7 +2,7 @@
 
 function formatMoneyWithCents(value)
 {
-    return (value * 1.0).toLocaleString(undefined, { maximumFractionDigits: 2 })
+    return (value * 1.0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
 function formatMoney(value)
