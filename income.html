@@ -13,6 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.min.js" integrity="sha512-GCiwmzA0bNGVsp1otzTJ4LWQT2jjGJENLGyLlerlzckNI30moi2EQT0AfRI7fLYYYDKR+7hnuh35r3y1uJzugw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://www.donovanmaas.dev/commonUtils.js" crossorigin="anonymous" async></script>
+    <script src="https://www.donovanmaas.dev/taxes.js" crossorigin="anonymous" async></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B1ELNH44BM"></script>
@@ -358,73 +359,7 @@
             return { tax: currentTax, income: income - currentTax };
         }
 
-        function get2022SingleFilerFederalTaxes()
-        {
-            return [
-                {
-                    taxRate: 10,
-                    taxableIncome: 0
-                },
-                {
-                    taxRate: 12,
-                    taxableIncome: 10276
-                },
-                {
-                    taxRate: 22,
-                    taxableIncome: 41776
-                },
-                {
-                    taxRate: 24,
-                    taxableIncome: 89076
-                },
-                {
-                    taxRate: 32,
-                    taxableIncome: 170051
-                },
-                {
-                    taxRate: 35,
-                    taxableIncome: 215951
-                },
-                {
-                    taxRate: 37,
-                    taxableIncome: 539901
-                }
-            ];
-        }
-
-        function get2023SingleFilerFederalTaxes()
-        {
-            return [
-                {
-                    taxRate: 10,
-                    taxableIncome: 0
-                },
-                {
-                    taxRate: 12,
-                    taxableIncome: 11001
-                },
-                {
-                    taxRate: 22,
-                    taxableIncome: 44726
-                },
-                {
-                    taxRate: 24,
-                    taxableIncome: 95376
-                },
-                {
-                    taxRate: 32,
-                    taxableIncome: 182101
-                },
-                {
-                    taxRate: 35,
-                    taxableIncome: 231251
-                },
-                {
-                    taxRate: 37,
-                    taxableIncome: 578126
-                }
-            ];
-        }
+        
     </script>
 </body>
 </html>
