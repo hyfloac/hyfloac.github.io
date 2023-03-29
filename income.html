@@ -550,10 +550,11 @@
                         if(income >= taxBrackets[i].taxableIncome)
                         {
                             const upperBound = i == taxBrackets.length - 1 ? Infinity : taxBrackets[i + 1].taxableIncome - 1;
+                            const taxablePortion = Math.min(currentIncome, upperBound)
 
-                            const tax = (taxBrackets[i].taxRate / 100.0) * Math.min(currentIncome, upperBound);
+                            const tax = (taxBrackets[i].taxRate / 100.0) * taxablePortion;
                             currentTax += tax;
-                            currentIncome = income - upperBound;
+                            currentIncome -= taxablePortion;
                         }
                         else
                         {
