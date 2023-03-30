@@ -496,8 +496,8 @@
                     federalTaxableIncomeBracketsDiv.replaceChildren();
                     federalTaxRemoveDiv.replaceChildren();
 
-                    salaryInput.value = state.salary;
-                    newSalaryInput.value = state.newSalary;
+                    setMoneyValue(salaryInput, state.salary);
+                    setMoneyValue(newSalaryInput, state.newSalary);
 
                     for(let i = 0; i < state.federalTaxBrackets.length; ++i)
                     {
