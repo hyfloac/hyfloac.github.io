@@ -36,7 +36,20 @@ function registerMoneyFormatter(field)
         field.underlyingValue = field.value;
     });
 
-    field.value = field.value.replace(/[^0-9]/, "") * 1;
+    setMoneyValue(field, field.value);
+}
+
+function setMoneyValue(field, value)
+{
+    if(typeof(value) === "string") 
+    {
+        field.value = value.replace(/[^0-9]/, "") * 1;
+    }
+    else if(typeof(value) === "number")
+    {
+        field.value = value;
+    }
+    
     field.dispatchEvent(new Event("blur"));
 }
 

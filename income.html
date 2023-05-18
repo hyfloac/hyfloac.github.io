@@ -13,6 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.min.js" integrity="sha512-GCiwmzA0bNGVsp1otzTJ4LWQT2jjGJENLGyLlerlzckNI30moi2EQT0AfRI7fLYYYDKR+7hnuh35r3y1uJzugw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://www.donovanmaas.dev/commonUtils.js" crossorigin="anonymous" async></script>
+    <script src="https://www.donovanmaas.dev/taxes.js" crossorigin="anonymous" async></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B1ELNH44BM"></script>
@@ -27,13 +28,6 @@
         // Disable Ad Personalization on this site.
         gtag('set', 'allow_ad_personalization_signals', false);
     </script>
-
-    <style>
-        canvas {
-            width: 100%;
-            height: auto;
-        }
-    </style>
 </head>
 
 <body>
@@ -54,6 +48,7 @@
                     <hr>
                     <form>
                         <div class="row">
+                            <h2>Income</h2>
                             <div class="col col-12 col-sm-12 col-md">
                                 <div class="mb-2">
                                     <label id="salaryInputLabel" for="salaryInput" class="form-label">Annual Salary</label>
@@ -82,43 +77,126 @@
                                     <div class="col col-1"></div>
                                 </div>
                                 <div class="row">
-                                    <div id="federalTaxRateBracketsDiv" class="col col-3">
+                                    <div id="federalTaxRateBracketsDiv" class="col col-3"></div>
+                                    <div id="federalTaxableIncomeBracketsDiv" class="col col-8"></div>
+                                    <div id="federalTaxRemoveDiv" class="col col-1"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-3">
+                                        <button id="addFederalBacketButton" type="button" class="btn btn-secondary">Add Bracket</button>
                                     </div>
-                                    <div id="federalTaxableIncomeBracketsDiv" class="col col-8">
-                                    </div>
-                                    <div id="federalTaxRemoveDiv" class="col col-1">
-
+                                    <div class="col">
+                                        <select id="federalTaxLoadSelector" class="form-select">
+                                            <option value="0" selected>Custom</option>
+                                            <option value="1">2022 Single Filer</option>
+                                            <option value="2">2022 Married Filing Jointly</option>
+                                            <option value="3">2022 Married Filing Separately</option>
+                                            <option value="4">2022 Head of Household</option>
+                                            <option value="5">2023 Single Filer</option>
+                                            <option value="6">2023 Married Filing Jointly</option>
+                                            <option value="7">2023 Married Filing Separately</option>
+                                            <option value="8">2023 Head of Household</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <button id="addFederalBacketButton" type="button" class="btn btn-secondary">Add Bracket</button>
-                                <button id="load2022SingleFederalButton" type="button" class="btn btn-secondary">Load 2022 Single Filer</button>
-                                <button id="load2023SingleFederalButton" type="button" class="btn btn-secondary">Load 2023 Single Filer</button>
                             </div>
                         </div>
                     </form>
-                    <hr>
+                    <hr />
                     <form>
                         <div class="row">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label id="taxesOutputLabel" for="taxesOutput" class="form-label">Total Taxes Paid</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="text" class="form-control" id="taxesOutput" aria-labelledby="taxesOutputLabel" value="0" readonly>
+                            <h2>Pre Tax Deductions</h2>
+                            <div class="col col-12 col-sm col-md">
+                                <div class="row">
+                                    <div class="col col-4">
+                                        <label class="form-label">Name</label>
                                     </div>
+                                    <div class="col col-2">
+                                        <label class="form-label">Type</label>
+                                    </div>
+                                    <div class="col col-5">
+                                        <label class="form-label">Amount</label>
+                                    </div>
+                                    <div class="col col-1"></div>
                                 </div>
-                                <div class="mb-3">
-                                    <label id="postIncomeOutputLabel" for="postIncomeOutput" class="form-label">Post Tax Income</label>
-                                    
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="text" class="form-control" id="postIncomeOutput" aria-labelledby="postIncomeOutputLabel" value="0" readonly>
+                                <div class="row">
+                                    <div id="deductionNameDiv" class="col col-4"></div>
+                                    <div id="deductionTypeDiv" class="col col-2"></div>
+                                    <div id="deductionAmountDiv" class="col col-5"></div>
+                                    <div id="deductionRemoveDiv" class="col col-1"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-3">
+                                        <button id="addFederalBacketButton" type="button" class="btn btn-secondary">Add Bracket</button>
+                                    </div>
+                                    <div class="col">
+                                        <select id="federalTaxLoadSelector" class="form-select">
+                                            <option value="0" selected>Custom</option>
+                                            <option value="1">2022 Single Filer</option>
+                                            <option value="2">2022 Married Filing Jointly</option>
+                                            <option value="3">2022 Married Filing Separately</option>
+                                            <option value="4">2022 Head of Household</option>
+                                            <option value="5">2023 Single Filer</option>
+                                            <option value="6">2023 Married Filing Jointly</option>
+                                            <option value="7">2023 Married Filing Separately</option>
+                                            <option value="8">2023 Head of Household</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <hr>
+                    <hr />
+                    <form>
+                        <h2>Final Income</h2>
+                        <div class="row">
+                            <h3>Current Salary</h3>
+                            <div class="col mb-3">
+                                <label id="taxesOutputLabel" for="taxesOutput" class="form-label">Total Taxes Paid</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" class="form-control" id="taxesOutput" aria-labelledby="taxesOutputLabel" value="0" readonly>
+                                </div>
+                            </div>
+                            <div class="col mb-3">
+                                <label id="postIncomeOutputLabel" for="postIncomeOutput" class="form-label">Post Tax Income</label>
+                                
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" class="form-control" id="postIncomeOutput" aria-labelledby="postIncomeOutputLabel" value="0" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h3>New Salary</h3>
+                            <div class="col mb-3">
+                                <label id="newTaxesOutputLabel" for="newTaxesOutput" class="form-label">Total Taxes Paid</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" class="form-control" id="newTaxesOutput" aria-labelledby="newTaxesOutputLabel" value="0" readonly>
+                                </div>
+                            </div>
+                            <div class="col mb-3">
+                                <label id="newPostIncomeOutputLabel" for="newPostIncomeOutput" class="form-label">Post Tax Income</label>
+                                
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" class="form-control" id="newPostIncomeOutput" aria-labelledby="newPostIncomeOutputLabel" value="0" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                    <form>
+                        <h2>Stored Data</h2>
+                        <div class="input-group mb-3">
+                            <label id="rawDataInputLabel" for="rawDataInput" class="form-label"></label>
+                            <textarea class="form-control" id="rawDataInput" aria-labelledby="rawDataInputLabel" rows="5"></textarea>
+                        </div>
+                        <button id="loadDataButton" type="button" class="btn btn-secondary">Load Data</button>
+                        <button id="shareButton" type="button" class="btn btn-secondary">Copy Link</button>
+                    </form>
+                    <hr />
                 </div>
             </div>
         </div>
@@ -132,21 +210,39 @@
                 const federalTaxableIncomeBracketId = "federalTaxableIncomeBracketInput";
                 const federalTaxRemoveId = "federalTaxRemoveButton";
 
+                const deductionNameId = "deductionNameInput";
+                const deductionTypeId = "deductionTypeSelect";
+                const deductionAmountId = "deductionAmountInput";
+                const deductionRemoveId = "deductionRemoveButton";
+
+                let federalTaxIndex = 0;
+                let deductionIndex = 0;
+
                 const interestGraphCanvas = document.getElementById("interestGraph");
 
                 const federalTaxRateBracketsDiv = document.getElementById("federalTaxRateBracketsDiv");
                 const federalTaxableIncomeBracketsDiv = document.getElementById("federalTaxableIncomeBracketsDiv");
                 const federalTaxRemoveDiv = document.getElementById("federalTaxRemoveDiv");
 
+                const deductionNameDiv = document.getElementById("deductionNameDiv");
+                const deductionTypeDiv = document.getElementById("deductionTypeDiv");
+                const deductionAmountDiv = document.getElementById("deductionAmountDiv");
+                const deductionRemoveDiv = document.getElementById("deductionRemoveDiv");
+
                 const addFederalBacketButton = document.getElementById("addFederalBacketButton");
-                const load2022SingleFederalButton = document.getElementById("load2022SingleFederalButton");
-                const load2023SingleFederalButton = document.getElementById("load2023SingleFederalButton");
+                const federalTaxLoadSelector = document.getElementById("federalTaxLoadSelector");
 
                 const salaryInput = document.getElementById("salaryInput");
                 const newSalaryInput = document.getElementById("newSalaryInput");
 
                 const taxesOutput = document.getElementById("taxesOutput");
                 const postIncomeOutput = document.getElementById("postIncomeOutput");
+                const newTaxesOutput = document.getElementById("newTaxesOutput");
+                const newPostIncomeOutput = document.getElementById("newPostIncomeOutput");
+
+                const rawDataInput = document.getElementById("rawDataInput");
+                const loadDataButton = document.getElementById("loadDataButton");
+                const shareButton = document.getElementById("shareButton");
 
                 const percentInputGroupText = document.createElement("span");
                 percentInputGroupText.className = "input-group-text";
@@ -167,9 +263,29 @@
                 removeTaxButton.className = "btn btn-danger mb-3";
                 removeTaxButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16"><path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg>';
 
-                let federalTaxIndex = 0;
+                const deductionTypeSelect = document.createElement("select");
+                deductionTypeSelect.className = "form-select";
 
-                const globalState = loadState(() => {
+                const fixedAmountOption = document.createElement("option");
+                fixedAmountOption.value = "fixed";
+                fixedAmountOption.innerText = "Fixed Amount";
+                fixedAmountOption.selected = true;
+
+                const grossPercentOption = document.createElement("option");
+                grossPercentOption.value = "gross";
+                grossPercentOption.innerText = "Gross %";
+
+                deductionTypeSelect.appendChild(fixedAmountOption.cloneNode(true));
+                deductionTypeSelect.appendChild(grossPercentOption.cloneNode(true));
+
+                const netPercentOption = document.createElement("option");
+                netPercentOption.value = "net";
+                netPercentOption.innerText = "Net %";
+
+                const expenseTypeSelect = deductionTypeSelect.cloneNode(true);
+                expenseTypeSelect.appendChild(netPercentOption.cloneNode(true));
+
+                let globalState = loadState(() => {
                     return {
                         salary: 100000,
                         newSalary: 125000,
@@ -177,6 +293,53 @@
                     }
                 });
                 reloadFromState(globalState);
+
+                if(federalTaxIndex == 0)
+                {
+                    addFederalTaxBracket();
+                }
+
+                addDeductionLine();
+
+                registerMoneyFormatter(salaryInput);
+                registerMoneyFormatter(newSalaryInput);
+
+                addFederalBacketButton.addEventListener("click", addFederalTaxBracket);
+                federalTaxLoadSelector.addEventListener("change", event => {
+                    const loadedTaxes = getTaxes(event.target.value);
+                    if(loadedTaxes)
+                    {
+                        globalState.federalTaxBrackets = loadedTaxes;
+                        saveState(globalState);
+                        reloadFromState(globalState);
+                    }
+                });
+
+                salaryInput.addEventListener("input", event => {
+                    globalState.salary = event.target.value|0;
+                    saveState(globalState);
+                    handleTaxes();
+                });
+                newSalaryInput.addEventListener("input", event => {
+                    globalState.newSalary = event.target.value|0;
+                    saveState(globalState);
+                    handleTaxes();
+                });
+
+                loadDataButton.addEventListener("click", () => {
+                    globalState = JSON.parse(rawDataInput.value);
+                    reloadFromState(globalState);
+                    saveState(globalState);
+                });
+                shareButton.addEventListener("click", () => {
+                    const encodedState = btoa(JSON.stringify(globalState));
+                    navigator.clipboard.writeText(window.location.href.split("?")[0] + "?data=" + encodedState).then(function() {
+
+                    }, function(err) {
+                        console.log("Failed to copy link to clipboad.");
+                    });
+                });
+
 
                 function onFederalTaxInput(event)
                 {
@@ -188,7 +351,7 @@
                         const taxableIncome = document.getElementById(federalTaxableIncomeBracketId + i);
 
                         let income = taxableIncome.underlyingValue;
-                        if(taxableIncome.id === event.target.id)
+                        if(event && taxableIncome.id === event.target.id)
                         {
                             income = taxableIncome.value.replace(/[^0-9]/, "");
                         }
@@ -230,7 +393,7 @@
 
                     const removeButton = removeTaxButton.cloneNode(true);
                     removeButton.id = federalTaxRemoveId + federalTaxIndex;
-                    removeButton.addEventListener("click", () => {
+                    removeButton.addEventListener("click", event => {
                         federalTaxRateBracketsDiv.removeChild(inputGroupDiv0);
                         federalTaxableIncomeBracketsDiv.removeChild(inputGroupDiv1);
                         federalTaxRemoveDiv.removeChild(removeButton);
@@ -256,39 +419,63 @@
                     ++federalTaxIndex;
                 }
 
-                function addFederalTaxBracket()
-                {
+                function addFederalTaxBracket() 
+                { 
                     addFederalTaxBracketWithValue(null, null);
                 }
 
-                if(federalTaxIndex == 0)
+                function addDeductionLine()
                 {
-                    addFederalTaxBracket();
+                    const nameInput = taxInput.cloneNode();
+                    nameInput.id = federalTaxRateBracketId + deductionIndex;
+                    deductionNameDiv.appendChild(nameInput);
+
+                    const typeSelector = deductionTypeSelect.cloneNode(true);
+                    typeSelector.id = deductionTypeId + deductionIndex;
+                    deductionTypeDiv.appendChild(typeSelector);
+
+                    const inputGroupDiv1 = taxInputGroupDiv.cloneNode();
+
+                    const amountInput = taxInput.cloneNode();
+                    amountInput.id = deductionAmountId + deductionIndex;
+                    registerMoneyFormatter(amountInput);
+
+                    inputGroupDiv1.appendChild(dollarInputGroupText.cloneNode(true));
+                    inputGroupDiv1.appendChild(amountInput);
+                    deductionAmountDiv.appendChild(inputGroupDiv1);
+                    
+                    const currentIndex = deductionIndex;
+
+                    const removeButton = removeTaxButton.cloneNode(true);
+                    removeButton.id = deductionRemoveId + deductionIndex;
+                    removeButton.addEventListener("click", () => {
+                        deductionNameDiv.removeChild(nameInput);
+                        deductionTypeDiv.removeChild(typeSelector);
+                        deductionAmountDiv.removeChild(inputGroupDiv1);
+                        deductionRemoveDiv.removeChild(removeButton);
+
+                        for(let i = currentIndex + 1; i < deductionIndex; ++i)
+                        {
+                            const name = document.getElementById(deductionNameId + i);
+                            const type = document.getElementById(deductionTypeId + i);
+                            const amount = document.getElementById(deductionAmountId + i);
+                            const remove = document.getElementById(deductionRemoveId + i);
+
+                            name.id = deductionNameId + (i - 1);
+                            type.id = deductionTypeId + (i - 1);
+                            amount.id = deductionAmountId + (i - 1);
+                            remove.id = deductionRemoveId + (i - 1);
+                        }
+
+                        --deductionIndex;
+
+                        onFederalTaxInput();
+                    });
+
+                    deductionRemoveDiv.appendChild(removeButton);
+
+                    ++deductionIndex;
                 }
-
-                addFederalBacketButton.addEventListener("click", addFederalTaxBracket);
-                load2022SingleFederalButton.addEventListener("click", () => {
-                    globalState.federalTaxBrackets = get2022SingleFilerFederalTaxes();
-                    reloadFromState(globalState);
-                });
-                load2023SingleFederalButton.addEventListener("click", () => {
-                    globalState.federalTaxBrackets = get2023SingleFilerFederalTaxes();
-                    reloadFromState(globalState);
-                });
-
-                registerMoneyFormatter(salaryInput);
-                registerMoneyFormatter(newSalaryInput);
-
-                salaryInput.addEventListener("input", event => {
-                    globalState.salary = event.target.value|0;
-                    saveState(globalState);
-                    handleTaxes();
-                });
-                newSalaryInput.addEventListener("input", event => {
-                    globalState.newSalary = event.target.value|0;
-                    saveState(globalState);
-                    handleTaxes();
-                });
 
                 function handleTaxes()
                 {
@@ -296,6 +483,11 @@
 
                     taxesOutput.value = formatMoneyWithCents(taxesAndIncome.tax);
                     postIncomeOutput.value = formatMoneyWithCents(taxesAndIncome.income);
+
+                    const newTaxesAndIncome = computeTaxAndIncome(globalState.newSalary, globalState.federalTaxBrackets);
+
+                    newTaxesOutput.value = formatMoneyWithCents(newTaxesAndIncome.tax);
+                    newPostIncomeOutput.value = formatMoneyWithCents(newTaxesAndIncome.income);
                 }
 
                 function reloadFromState(state)
@@ -304,8 +496,8 @@
                     federalTaxableIncomeBracketsDiv.replaceChildren();
                     federalTaxRemoveDiv.replaceChildren();
 
-                    salaryInput.value = state.salary;
-                    newSalaryInput.value = state.newSalary;
+                    setMoneyValue(salaryInput, state.salary);
+                    setMoneyValue(newSalaryInput, state.newSalary);
 
                     for(let i = 0; i < state.federalTaxBrackets.length; ++i)
                     {
@@ -313,118 +505,83 @@
                     }
 
                     handleTaxes();
+
+                    rawDataInput.value = JSON.stringify(state);
+                }
+
+                function loadState(init)
+                {
+                    const urlSearchParams = new URLSearchParams(window.location.search);
+                    
+                    let data = "";
+
+                    if(urlSearchParams.has("data"))
+                    {
+                        data = atob(urlSearchParams.get("data"));
+                        window.localStorage.setItem("data", data);
+                    }
+                    else
+                    {
+                        data = window.localStorage.getItem("data");
+                    }
+
+                    if(data === null)
+                    {
+                        return init();
+                    }
+
+                    return JSON.parse(data);
+                }
+
+                function saveState(state)
+                {
+                    const stringState = JSON.stringify(state);
+                    window.localStorage.setItem("data", stringState);
+                    rawDataInput.value = stringState;
+                }
+
+                function computeTaxAndIncome(income, taxBrackets)
+                {
+                    let currentIncome = income;
+                    let currentTax = 0;
+
+                    for(let i = 0; i < taxBrackets.length; ++i)
+                    {
+                        if(income >= taxBrackets[i].taxableIncome)
+                        {
+                            const upperBound = i == taxBrackets.length - 1 ? Infinity : taxBrackets[i + 1].taxableIncome - 1;
+                            const taxablePortion = Math.min(currentIncome, upperBound)
+
+                            const tax = (taxBrackets[i].taxRate / 100.0) * taxablePortion;
+                            currentTax += tax;
+                            currentIncome -= taxablePortion;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    return { tax: currentTax, income: income - currentTax };
+                }
+
+                function getTaxes(index)
+                {
+                    switch(index|0)
+                    {
+                        case 1: return get2022SingleFederalTaxes();
+                        case 2: return get2022MarriedJointFederalTaxes();
+                        case 3: return get2022MarriedSeparateFederalTaxes();
+                        case 4: return get2022HeadFederalTaxes();
+                        case 5: return get2023SingleFederalTaxes();
+                        case 6: return get2023MarriedJointFederalTaxes();
+                        case 7: return get2023MarriedSeparateFederalTaxes();
+                        case 8: return get2023HeadFederalTaxes();
+                        default: return null;
+                    }
                 }
             });
         })();
-
-        function loadState(init)
-        {
-            let data = window.localStorage.getItem("data");
-
-            if(data === null)
-            {
-                return init();
-            }
-
-            return JSON.parse(data);
-        }
-
-        function saveState(state)
-        {
-            window.localStorage.setItem("data", JSON.stringify(state));
-        }
-
-        function computeTaxAndIncome(income, taxBrackets)
-        {
-            let currentIncome = income;
-            let currentTax = 0;
-
-            for(let i = 0; i < taxBrackets.length; ++i)
-            {
-                if(income >= taxBrackets[i].taxableIncome)
-                {
-                    const upperBound = i == taxBrackets.length - 1 ? Infinity : taxBrackets[i + 1].taxableIncome - 1;
-
-                    const tax = (taxBrackets[i].taxRate / 100.0) * Math.min(currentIncome, upperBound);
-                    currentTax += tax;
-                    currentIncome -= upperBound;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            return { tax: currentTax, income: income - currentTax };
-        }
-
-        function get2022SingleFilerFederalTaxes()
-        {
-            return [
-                {
-                    taxRate: 10,
-                    taxableIncome: 0
-                },
-                {
-                    taxRate: 12,
-                    taxableIncome: 10276
-                },
-                {
-                    taxRate: 22,
-                    taxableIncome: 41776
-                },
-                {
-                    taxRate: 24,
-                    taxableIncome: 89076
-                },
-                {
-                    taxRate: 32,
-                    taxableIncome: 170051
-                },
-                {
-                    taxRate: 35,
-                    taxableIncome: 215951
-                },
-                {
-                    taxRate: 37,
-                    taxableIncome: 539901
-                }
-            ];
-        }
-
-        function get2023SingleFilerFederalTaxes()
-        {
-            return [
-                {
-                    taxRate: 10,
-                    taxableIncome: 0
-                },
-                {
-                    taxRate: 12,
-                    taxableIncome: 11001
-                },
-                {
-                    taxRate: 22,
-                    taxableIncome: 44726
-                },
-                {
-                    taxRate: 24,
-                    taxableIncome: 95376
-                },
-                {
-                    taxRate: 32,
-                    taxableIncome: 182101
-                },
-                {
-                    taxRate: 35,
-                    taxableIncome: 231251
-                },
-                {
-                    taxRate: 37,
-                    taxableIncome: 578126
-                }
-            ];
-        }
     </script>
 </body>
 </html>
