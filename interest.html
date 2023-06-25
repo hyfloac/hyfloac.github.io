@@ -8,6 +8,8 @@
 
     <title>Interest Calculator</title>
 
+    <link rel="canonical" href="https://donovanmaas.dev/interest" />
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.min.js" integrity="sha512-GCiwmzA0bNGVsp1otzTJ4LWQT2jjGJENLGyLlerlzckNI30moi2EQT0AfRI7fLYYYDKR+7hnuh35r3y1uJzugw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -92,17 +94,30 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label id="contributionIncreasePercentInputLabel" for="contributionIncreasePercentInput" class="form-label">Contribution Increase Per Year</label>
+                                    <label id="contributionIncreaseInputLabel" for="contributionIncreaseInput" class="form-label">Contribution Increase Per Year</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="contributionIncreasePercentInput" aria-labelledby="contributionIncreasePercentInputLabel" value="5" required>
+                                        <span class="input-group-text">$</span>
+                                        <input type="text" class="form-control" id="contributionIncreaseInput" aria-labelledby="contributionIncreaseInputLabel" value="1000" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="distributionRadio" id="distributionPercentRadio" checked>
+                                        <label id="distributionPercentInputLabel" for="distributionPercentInput" class="form-label">Annual Distribution Percent</label>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="distributionPercentInput" aria-labelledby="distributionPercentInputLabel" value="3" required>
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label id="distributionPercentInputLabel" for="distributionPercentInput" class="form-label">Annual Distribution Percent</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="distributionRadio" id="distributionFixedRadio">
+                                        <label id="distributionFixedInputLabel" for="distributionFixedInput" class="form-label">Annual Distribution Amount Equivalent to Today</label>
+                                    </div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="distributionPercentInput" aria-labelledby="distributionPercentInputLabel" value="3" required>
-                                        <span class="input-group-text">%</span>
+                                        <span class="input-group-text">$</span>
+                                        <input type="text" class="form-control" id="distributionFixedInput" aria-labelledby="distributionFixedInputLabel" value="50000" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -136,11 +151,26 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
+                                    <label id="valuationEquivOutputLabel" for="valuationEquivOutput" class="form-label">Estimated Valuation Before Distributions Equivalent to Today</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="text" class="form-control" id="valuationEquivOutput" aria-labelledby="valuationEquivOutputLabel" value="0" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
                                     <label id="distributionOutputLabel" for="distributionOutput" class="form-label">Starting Annual Distribution</label>
                                     
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
                                         <input type="text" class="form-control" id="distributionOutput" aria-labelledby="distributionOutputLabel" value="0" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label id="distributionEquivOutputLabel" for="distributionEquivOutput" class="form-label">Starting Annual Distribution Equivalent to Today</label>
+                                    
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="text" class="form-control" id="distributionEquivOutput" aria-labelledby="distributionEquivOutputLabel" value="0" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -167,10 +197,13 @@
                 const contributionInput = document.getElementById("contributionInput");
                 const contributionRangeInput = document.getElementById("contributionRangeInput");
 
-                const contributionIncreasePercentInput = document.getElementById("contributionIncreasePercentInput");
+                const contributionIncreaseInput = document.getElementById("contributionIncreaseInput");
                 const interestInput = document.getElementById("interestInput");
                 const interestDeviationInput = document.getElementById("interestDeviationInput");
+                const distributionPercentRadio = document.getElementById("distributionPercentRadio");
+                const distributionFixedRadio = document.getElementById("distributionFixedRadio");
                 const distributionPercentInput = document.getElementById("distributionPercentInput");
+                const distributionFixedInput = document.getElementById("distributionFixedInput");
 
                 const yearsInput = document.getElementById("yearsInput");
                 const yearsRangeInput = document.getElementById("yearsRangeInput");
@@ -179,7 +212,9 @@
                 const distributionYearRangeInput = document.getElementById("distributionYearRangeInput");
 
                 const valuationOutput = document.getElementById("valuationOutput");
+                const valuationEquivOutput = document.getElementById("valuationEquivOutput");
                 const distributionOutput = document.getElementById("distributionOutput");
+                const distributionEquivOutput = document.getElementById("distributionEquivOutput");
 
                 const chart = new Chart(
                     interestGraphCanvas,
@@ -196,93 +231,88 @@
                     }
                 );
 
-                function updateChartWithDeviation() 
+                function computeChart(useDeviation) 
                 {
                     const principle = principleInput.underlyingValue * 1;
                     let contribution = contributionInput.underlyingValue * 1;
                     const interest = 1 + (interestInput.value / 100.0);
+                    const interestWithoutInflation = 1 + ((interestInput.value - 2) / 100.0);
                     const interestDeviation = interestDeviationInput.value / 100.0;
                     const interestAbove = interest + interestDeviation;
                     const interestBelow = interest - interestDeviation;
-                    const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
+                    const contributionIncrease = contributionIncreaseInput.underlyingValue * 1;
                     const distributionPercent = distributionPercentInput.value / 100.0;
+                    let distributionFixed = distributionFixedInput.underlyingValue * 1;
                     const years = yearsInput.value|0;
-                    const distributionYear = distributionYearInput.value|0;
+                    const distributionYear = ((distributionYearInput.value|0) + 1)|0;
 
                     let currentValueAbove = principle;
                     let currentValue = principle;
                     let currentValueBelow = principle;
+                    let currentValueWithoutInflation = principle;
 
                     for(let i = 0; i <= years; ++i)
                     {
                         if(i == distributionYear || (i == years && distributionYear >= years))
                         {
                             valuationOutput.value = formatMoney(currentValue);
-                            distributionOutput.value = formatMoney(currentValue * distributionPercent);
+                            valuationEquivOutput.value = formatMoney(currentValueWithoutInflation);
+                            if(distributionFixedRadio.checked)
+                            {
+                                distributionOutput.value = formatMoney(currentValue > distributionFixed ? distributionFixed : currentValue);
+                                distributionEquivOutput.value = formatMoney(currentValueWithoutInflation > distributionFixedInput.underlyingValue * 1 ? distributionFixedInput.underlyingValue * 1 : currentValueWithoutInflation);
+                            }
+                            else if(distributionPercentRadio.checked)
+                            {
+                                distributionOutput.value = formatMoney(currentValue * distributionPercent);
+                                distributionEquivOutput.value = formatMoney(currentValueWithoutInflation * distributionPercent);
+                            }
                         }
 
                         if(i >= distributionYear)
                         {
-                            currentValueAbove -= currentValueAbove * distributionPercent;
-                            currentValue -= currentValue * distributionPercent;
-                            currentValueBelow -= currentValueBelow * distributionPercent;
+                            if(distributionFixedRadio.checked)
+                            {
+                                currentValueAbove -= currentValueAbove > distributionFixed ? distributionFixed : currentValueAbove;
+                                currentValue -= currentValue > distributionFixed ? distributionFixed : currentValue;
+                                currentValueBelow -= currentValueBelow > distributionFixed ? distributionFixed : currentValueBelow;
+                            }
+                            else if(distributionPercentRadio.checked)
+                            {
+                                currentValueAbove -= currentValueAbove * distributionPercent;
+                                currentValue -= currentValue * distributionPercent;
+                                currentValueBelow -= currentValueBelow * distributionPercent;
+                            }
                         }
 
                         chart.data.labels.push(i);
-                        chart.data.datasets[0].data.push(currentValueAbove);
-                        chart.data.datasets[1].data.push(currentValue);
-                        chart.data.datasets[2].data.push(currentValueBelow);
+                        if(useDeviation)
+                        {
+                            chart.data.datasets[0].data.push(currentValueAbove);
+                            chart.data.datasets[1].data.push(currentValue);
+                            chart.data.datasets[2].data.push(currentValueBelow);
+                        }
+                        else
+                        {
+                            chart.data.datasets[0].data.push(currentValue);
+                        }
 
                         if(i < distributionYear)
                         {
                             currentValueAbove += contribution;
                             currentValue += contribution;
                             currentValueBelow  += contribution;
+                            currentValueWithoutInflation += contribution;
                             
-                            contribution *= contributionInterest;
+                            contribution += contributionIncrease;
                         }
+
+                        distributionFixed *= 1.02;
 
                         currentValueAbove *= interestAbove;
                         currentValue *= interest;
                         currentValueBelow *= interestBelow;
-                    }
-                }
-
-                function updateChartWithoutDeviation() 
-                {
-                    const principle = principleInput.underlyingValue * 1;
-                    let contribution = contributionInput.underlyingValue * 1;
-                    const interest = 1 + (interestInput.value / 100.0);
-                    const interestDeviation = interestDeviationInput.value / 100.0;
-                    const contributionInterest = 1 + (contributionIncreasePercentInput.value / 100.0);
-                    const distributionPercent = distributionPercentInput.value / 100.0;
-                    const years = yearsInput.value|0;
-                    const distributionYear = distributionYearInput.value|0;
-
-                    let currentValue = principle;
-
-                    for(let i = 0; i <= years; ++i)
-                    {
-                        if(i == distributionYear || (i == years && distributionYear >= years))
-                        {
-                            valuationOutput.value = formatMoney(currentValue);
-                            distributionOutput.value = formatMoney(currentValue * distributionPercent);
-                        }
-
-                        if(i >= distributionYear)
-                        {
-                            currentValue -= currentValue * distributionPercent;
-                        }
-
-                        chart.data.labels.push(i);
-                        chart.data.datasets[0].data.push(currentValue);
-
-                        if(i < distributionYear)
-                        {
-                            currentValue += contribution;
-                            contribution *= contributionInterest;
-                        }
-                        currentValue *= interest;
+                        currentValueWithoutInflation *= interestWithoutInflation;
                     }
                 }
 
@@ -310,7 +340,7 @@
                                 data: [ ],
                                 borderColor: "rgb(0, 45, 79)",
                                 segment: {
-                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? "rgb(255, 210, 176)" : undefined
+                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 1 ? "rgb(255, 210, 176)" : undefined
                                 }
                             },
                             {
@@ -318,7 +348,7 @@
                                 data: [ ],
                                 borderColor: valuationColor,
                                 segment: {
-                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? valuationDistributionColor : undefined
+                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 1 ? valuationDistributionColor : undefined
                                 }
                             },
                             {
@@ -326,7 +356,7 @@
                                 data: [ ],
                                 borderColor: "rgb(19, 134, 135)",
                                 segment: {
-                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? "rgb(235, 121, 120)" : undefined
+                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 1 ? "rgb(235, 121, 120)" : undefined
                                 }
                             },
                             {
@@ -337,7 +367,7 @@
                             }
                         ];
 
-                        updateChartWithDeviation();
+                        computeChart(true);
                     }
                     else
                     {
@@ -349,7 +379,7 @@
                                 data: [ ],
                                 borderColor: valuationColor,
                                 segment: {
-                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 2 ? valuationDistributionColor : undefined
+                                    borderColor: ctx => ctx.p0.parsed.x > distributionYear - 1 ? valuationDistributionColor : undefined
                                 }
                             },
                             {
@@ -360,7 +390,7 @@
                             }
                         ];
 
-                        updateChartWithoutDeviation();
+                        computeChart(false);
                     }
 
                     let inflationTracker = 1000000;
@@ -374,8 +404,50 @@
                     chart.update("none");
                 }
 
+                function registerRadioListener(primaryRadio, otherRadios)
+                {
+                    primaryRadio.radio.addEventListener("input", () => {
+                        if(!primaryRadio.radio.checked)
+                        {
+                            return;
+                        }
+
+                        if(primaryRadio.requiredInputs)
+                        {
+                            primaryRadio.requiredInputs.forEach(input => {
+                                input.required = true;
+                                input.disabled = false;
+                            });
+                        }
+                        if(primaryRadio.otherInputs)
+                        {
+                            primaryRadio.otherInputs.forEach(input => {
+                                input.disabled = false;
+                            });
+                        }
+
+                        otherRadios.forEach(radio => {
+                            if(radio.requiredInputs)
+                            {
+                                radio.requiredInputs.forEach(input => {
+                                    input.required = false;
+                                    input.disabled = true;
+                                });
+                            }
+                            if(radio.otherInputs)
+                            {
+                                radio.otherInputs.forEach(input => {
+                                    input.disabled = true;
+                                });
+                            }
+                        });
+                    });
+                }
+
                 registerMoneyFormatter(principleInput);
                 registerMoneyFormatter(contributionInput);
+                registerMoneyFormatter(contributionIncreaseInput);
+                registerMoneyFormatter(distributionFixedInput);
 
                 updateChart();
 
@@ -386,8 +458,27 @@
 
                 interestInput.addEventListener("input", updateChart);
                 interestDeviationInput.addEventListener("input", updateChart);
-                contributionIncreasePercentInput.addEventListener("input", updateChart);
+                contributionIncreaseInput.addEventListener("input", updateChart);
+                distributionPercentRadio.addEventListener("input", updateChart);
+                distributionFixedRadio.addEventListener("input", updateChart);
                 distributionPercentInput.addEventListener("input", updateChart);
+                distributionFixedInput.addEventListener("input", updateChart);
+
+                registerRadioListener(
+                    { radio: distributionPercentRadio, requiredInputs: [ distributionPercentInput ] }, 
+                    [
+                        { radio: distributionFixedRadio, requiredInputs: [ distributionFixedInput ] }
+                    ]
+                );
+                registerRadioListener(
+                    { radio: distributionFixedRadio, requiredInputs: [ distributionFixedInput ] },
+                    [
+                        { radio: distributionPercentRadio, requiredInputs: [ distributionPercentInput ] }
+                    ]
+                );
+
+                distributionPercentRadio.dispatchEvent(new Event("input"));
+                distributionFixedRadio.dispatchEvent(new Event("input"));
             });
         })();
     </script>
