@@ -257,16 +257,27 @@
                         {
                             valuationOutput.value = formatMoney(currentValue);
                             valuationEquivOutput.value = formatMoney(currentValueWithoutInflation);
+
+                            let distValue = 0;
                             if(distributionFixedRadio.checked)
                             {
-                                distributionOutput.value = formatMoney(currentValue > distributionFixed ? distributionFixed : currentValue);
-                                distributionEquivOutput.value = formatMoney(currentValueWithoutInflation > distributionFixedInput.underlyingValue * 1 ? distributionFixedInput.underlyingValue * 1 : currentValueWithoutInflation);
+                                distValue = currentValue > distributionFixed ? distributionFixed : currentValue;
+                                // distributionOutput.value = formatMoney(currentValue > distributionFixed ? distributionFixed : currentValue);
+                                // distributionEquivOutput.value = formatMoney(currentValueWithoutInflation > distributionFixedInput.underlyingValue * 1 ? distributionFixedInput.underlyingValue * 1 : currentValueWithoutInflation);
                             }
                             else if(distributionPercentRadio.checked)
                             {
-                                distributionOutput.value = formatMoney(currentValue * distributionPercent);
+                                distValue = currentValue * distributionPercent;
+                                // distributionOutput.value = formatMoney(currentValue * distributionPercent);
                                 distributionEquivOutput.value = formatMoney(currentValueWithoutInflation * distributionPercent);
                             }
+                            distributionOutput.value = formatMoney(distValue);
+                            let distValueToday = distValue;
+                            for(let j = i; j >= 0; --j) 
+                            {
+                                distValueToday /= 1.02;
+                            }
+                            distributionEquivOutput.value = formatMoney(distValueToday);
                         }
 
                         if(i >= distributionYear)
