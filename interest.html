@@ -236,7 +236,24 @@
                     const principle = principleInput.underlyingValue * 1;
                     let contribution = contributionInput.underlyingValue * 1;
                     const interest = 1 + (interestInput.value / 100.0);
-                    const interestWithoutInflation = 1 + ((interestInput.value - 2) / 100.0);
+                    // const interestWithoutInflation = 1 + ((interestInput.value - 2) / 100.0);
+
+                    // A very painful derivation
+                    // MAI = M + M * I
+                    // MWI = M + M * IWI
+                    // MWI = MAI - MAI * I2
+                    // I2 = 2%
+                    // I = interest
+                    // M = money
+                    //
+                    // M + M * IWI = M + M * I - (M + M * I) * I2
+                    // M * IWI = M * I - (M + M * I) * I2
+                    // IWI = I - ((M + M * I) * I2) / M
+                    // IWI = I - ((M * I2) / M + (M * I * I2) / M)
+                    // IWI = I - (I2 + I * I2)
+                    const iwi = (i, i2) => i - (i2 + i * i2);
+                    const interestWithoutInflation = iwi(interestInput.value / 100.0, 0.02);
+
                     const interestDeviation = interestDeviationInput.value / 100.0;
                     const interestAbove = interest + interestDeviation;
                     const interestBelow = interest - interestDeviation;
