@@ -292,7 +292,8 @@
                             let distValueToday = distValue;
                             for(let j = i; j > 0; --j) 
                             {
-                                distValueToday /= 1.02;
+                                // distValueToday /= 1.02;
+                                distValueToday = distValueToday - distValueToday * 0.02;
                             }
                             distributionEquivOutput.value = formatMoney(distValueToday);
                         }
