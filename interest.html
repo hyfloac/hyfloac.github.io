@@ -340,7 +340,7 @@
                         currentValueAbove *= interestAbove;
                         currentValue *= interest;
                         currentValueBelow *= interestBelow;
-                        currentValueWithoutInflation *= interestWithoutInflation;
+                        currentValueWithoutInflation *= 1.0 + interestWithoutInflation;
                     }
                 }
 
