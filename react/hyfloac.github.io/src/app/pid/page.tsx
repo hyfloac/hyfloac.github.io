@@ -184,8 +184,8 @@ export default function Home() {
               suggestedMin: -100
             },
             derivativeScale: {
-              suggestedMax: 15,
-              suggestedMin: -15
+              suggestedMax: 25,
+              suggestedMin: -25
             }
           }
         }}
