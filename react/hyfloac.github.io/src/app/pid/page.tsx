@@ -47,6 +47,7 @@ class Pid
   public kD: number;
   public preError: number;
   public integral: number;
+  public prevDelta: number;
 
   constructor(
     deltaTime: number,
@@ -65,6 +66,7 @@ class Pid
     this.kD = kD;
     this.preError = 0.0;
     this.integral = 0.0;
+    this.prevDelta = 0.0;
   }
 
   public calculate(
@@ -86,7 +88,6 @@ class Pid
     const derivative: number = (error - this.preError) / this.deltaTime;
     const derivativeOut: number = this.kD * derivative;
 
-
     this.preError = error;
 
     return clamp(proportional + integral + derivativeOut, this.minChange, this.maxChange);
@@ -98,11 +99,11 @@ export default function Home() {
   const [ kI, setKi ] = useState(0.0);
   const [ kD, setKd ] = useState(0.0);
   const [ setPoint, setSetPoint ] = useState(5.0);
-  const [ chartData, setChartData ] = useState({data: [ 0 ], labels: [ "0" ], preError: 0.0, integral: 0.0, i: 0});
+  const [ chartData, setChartData ] = useState({pidData: [ 0 ], accelerationData: [ 0 ], jerkData: [ 0 ], labels: [ "0" ], preError: 0.0, integral: 0.0, i: 0});
 
   useEffect(() => {
     const deltaTime = 250;
-    const pid: Pid = new Pid(deltaTime / 1000.0, 10, -10, kP, kI, kD);
+    const pid: Pid = new Pid(deltaTime / 1000.0, 25, -25, kP, kI, kD);
     const chart = ChartJS.getChart("pidChart");
 
     function update() 
@@ -116,17 +117,26 @@ export default function Home() {
       ++chartData.i;
       chartData.labels.push(chartData.i.toString());
 
-      const lastPoint = chartData.data[chartData.data.length - 1];
+      const lastPoint = chartData.pidData[chartData.pidData.length - 1];
 
       const delta = pid.calculate(setPoint, lastPoint);
       // console.log("delta: " + delta + " setPoint: " + setPoint);
 
-      chartData.data.push(lastPoint + delta);
+      const newPoint = lastPoint + delta;
+
+      chartData.pidData.push(newPoint);
+
+      const prevAcceleration = chartData.accelerationData[chartData.accelerationData.length - 1];
+
+      chartData.accelerationData.push(delta);
+      chartData.jerkData.push(delta - prevAcceleration);
 
       if(chartData.labels.length > 50)
       {
         chartData.labels.shift();
-        chartData.data.shift();
+        chartData.pidData.shift();
+        chartData.accelerationData.shift();
+        chartData.jerkData.shift();
       }
 
       chartData.preError = pid.preError;
@@ -152,12 +162,12 @@ export default function Home() {
           </div>
           <div>
             <label htmlFor="kIInput">Ki</label>
-            <input type="range" id="kIInput" className="w-full" step="0.01" min="0" max="1" value={kI} onChange={(event) => setKi(Number.parseFloat(event.target.value))}></input>
+            <input type="range" id="kIInput" className="w-full" step="0.001" min="0" max="0.5" value={kI} onChange={(event) => setKi(Number.parseFloat(event.target.value))}></input>
             <span>{kI}</span>
           </div>
           <div>
             <label htmlFor="kDInput">Kd</label>
-            <input type="range" id="kDInput" className="w-full" step="0.01" min="0" max="1" value={kD} onChange={(event) => setKd(Number.parseFloat(event.target.value))}></input>
+            <input type="range" id="kDInput" className="w-full" step="0.001" min="-0.5" max="0.5" value={kD} onChange={(event) => setKd(Number.parseFloat(event.target.value))}></input>
             <span>{kD}</span>
           </div>
           <div>
@@ -169,9 +179,13 @@ export default function Home() {
         <Line
         options={{
           scales: {
-            y: {
+            pidScale: {
               suggestedMax: 100,
               suggestedMin: -100
+            },
+            derivativeScale: {
+              suggestedMax: 15,
+              suggestedMin: -15
             }
           }
         }}
@@ -180,8 +194,24 @@ export default function Home() {
           datasets: [
             {
               label: "PID",
-              data: chartData.data,
-              tension: 0.5
+              data: chartData.pidData,
+              tension: 0.5,
+              borderColor: "#000000",
+              yAxisID: "pidScale"
+            },
+            {
+              label: "Acceleration",
+              data: chartData.accelerationData,
+              tension: 0.5,
+              borderColor: "#AF0000",
+              yAxisID: "derivativeScale"
+            },
+            {
+              label: "Jerk",
+              data: chartData.jerkData,
+              tension: 0.5,
+              borderColor: "#AFAF00",
+              yAxisID: "derivativeScale"
             }
           ]
         }}
