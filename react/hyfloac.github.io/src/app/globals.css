@@ -75,12 +75,18 @@ a:hover {
   align-items: start;
 }
 
+.content-grid > * {
+  min-width: 0;
+}
+
 .stack {
   display: grid;
   gap: 24px;
+  min-width: 0;
 }
 
 .card-shell {
+  min-width: 0;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--surface);
@@ -136,10 +142,15 @@ a:hover {
 .gpg-item {
   display: grid;
   gap: 10px;
+  min-width: 0;
   padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--surface-strong);
+}
+
+.gpg-meta {
+  min-width: 0;
 }
 
 .gpg-meta p {
@@ -150,6 +161,7 @@ a:hover {
 .gpg-fingerprint {
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.88rem;
+  overflow-wrap: anywhere;
 }
 
 .gpg-id {
@@ -159,6 +171,7 @@ a:hover {
 .gpg-uid {
   margin-top: 4px;
   color: var(--muted);
+  overflow-wrap: anywhere;
 }
 
 .gpg-fingerprint {
@@ -236,6 +249,21 @@ a:hover {
 @media (max-width: 1080px) {
   .content-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "contact profile"
+      "contact projects";
+  }
+
+  .stack-contact {
+    grid-area: contact;
+  }
+
+  .stack-profile {
+    grid-area: profile;
+  }
+
+  .stack-projects {
+    grid-area: projects;
   }
 }
 
@@ -246,6 +274,13 @@ a:hover {
 
   .content-grid {
     grid-template-columns: 1fr;
+    grid-template-areas: none;
+  }
+
+  .stack-contact,
+  .stack-profile,
+  .stack-projects {
+    grid-area: auto;
   }
 
   .card-body {

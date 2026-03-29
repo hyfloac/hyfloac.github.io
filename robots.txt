@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /pid
+Disallow: /pid.html
+Disallow: /income.html
+Disallow: /interest.html
+Disallow: /nato.html
+Disallow: /taxes.js
+Disallow: /commonUtils.js
+Disallow: /index.txt
+Disallow: /pid.txt
+Disallow: /keys/
+Disallow: /.well-known/openpgpkey/
+
+Sitemap: https://donovanmaas.dev/sitemap.xml

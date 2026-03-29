@@ -48,6 +48,18 @@ const gpgKeys: GpgKey[] = [
     href: "/keys/donovan-maas-mail-hyfloac-com.txt",
   },
   {
+    id: "A76673BE0663EE2D",
+    fingerprint: "3BA7 2BA9 1805 3F97 366C 1759 A766 73BE 0663 EE2D",
+    uid: "business@donovanmaas.dev <business@donovanmaas.dev>",
+    href: "/keys/business@donovanmaas.dev-3ba72ba918053f97366c1759a76673be0663ee2d.txt",
+  },
+  {
+    id: "9D1B02D8A203B574",
+    fingerprint: "1551 3AD7 F3D4 C2C1 2881 275F 9D1B 02D8 A203 B574",
+    uid: "donovan@donovanmaas.dev <donovan@donovanmaas.dev>",
+    href: "/keys/donovan@donovanmaas.dev-15513ad7f3d4c2c12881275f9d1b02d8a203b574.txt",
+  },
+  {
     id: "AA6127F18CB207CC",
     fingerprint: "4AB7 1993 5829 A42A 5B9D 0D74 AA61 27F1 8CB2 07CC",
     uid: "Donovan Maas <donovan.maas@grafikastrahlen.dev>",
@@ -62,25 +74,35 @@ const gpgKeys: GpgKey[] = [
 ];
 
 const languages = [
-  "x86 Assembly",
-  "IA-32 Assembly",
-  "x86-64 Assembly",
   "C",
   "C++",
   "C#",
   "Java",
+  "x86 & x86-64 Assembly",
   "LLVM IR",
   "GLSL",
   "HLSL",
   "VHDL",
 ];
 
+const platforms = [
+  "Micronaut",
+  "ASP.NET",
+  "Direct3D 10",
+  "Direct3D 11",
+  "Direct3D 12",
+  "Vulkan",
+  "OpenGL",
+  "NestJS",
+  "Docker",
+  "Podman",
+  "WDDM",
+];
+
 const specialties = [
-  "Low-Level High-Performance Software",
   "Computer Graphics Programming",
+  "Systems Engineering",
   "Language and Data Parsers",
-  "x86-64 Vectorization Intrinsics",
-  "Data Oriented Programming",
   "Object Oriented Programming",
 ];
 
@@ -255,7 +277,7 @@ export default function Home() {
         </header>
 
         <div className="content-grid">
-          <div className="stack">
+          <div className="stack stack-contact">
             <Card title="Contact">
               <ContactTable />
             </Card>
@@ -265,9 +287,13 @@ export default function Home() {
             </Card>
           </div>
 
-          <div className="stack">
+          <div className="stack stack-profile">
             <Card title="Languages">
               <p className="body-copy">{languages.join(", ")}</p>
+            </Card>
+
+            <Card title="Frameworks & Platforms">
+              <p className="body-copy">{platforms.join(", ")}</p>
             </Card>
 
             <Card title="Specialties">
@@ -279,7 +305,7 @@ export default function Home() {
             </Card>
           </div>
 
-          <div className="stack">
+          <div className="stack stack-projects">
             <Card title="Projects">
               <ProjectList />
             </Card>
