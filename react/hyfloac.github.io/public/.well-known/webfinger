@@ -1,0 +1,24 @@
+{
+  "subject": "acct:donovan@donovanmaas.dev",
+  "aliases": [
+    "acct:business@donovanmaas.dev",
+    "https://donovanmaas.dev/"
+  ],
+  "links": [
+    {
+      "rel": "http://webfinger.net/rel/profile-page",
+      "type": "text/html",
+      "href": "https://donovanmaas.dev/"
+    },
+    {
+      "rel": "describedby",
+      "type": "text/plain",
+      "href": "https://donovanmaas.dev/keys/donovan@donovanmaas.dev-15513ad7f3d4c2c12881275f9d1b02d8a203b574.txt"
+    },
+    {
+      "rel": "describedby",
+      "type": "text/plain",
+      "href": "https://donovanmaas.dev/keys/business@donovanmaas.dev-3ba72ba918053f97366c1759a76673be0663ee2d.txt"
+    }
+  ]
+}
