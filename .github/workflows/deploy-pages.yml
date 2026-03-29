@@ -42,12 +42,17 @@ jobs:
       - name: Build Site
         run: npm run build
 
-      - name: Add Root Metadata Files
+      - name: Add Root Site Files
         run: |
           cp ../../CNAME out/CNAME
           cp ../../robots.txt out/robots.txt
           cp ../../humans.txt out/humans.txt
           cp ../../sitemap.xml out/sitemap.xml
+          cp ../../income.html out/income.html
+          cp ../../interest.html out/interest.html
+          cp ../../nato.html out/nato.html
+          cp ../../commonUtils.js out/commonUtils.js
+          cp ../../taxes.js out/taxes.js
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
