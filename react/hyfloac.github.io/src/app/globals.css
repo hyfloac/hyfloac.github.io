@@ -3,19 +3,261 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f5f7;
+  --surface: rgba(255, 255, 255, 0.96);
+  --surface-strong: #ffffff;
+  --border: rgba(15, 23, 42, 0.1);
+  --foreground: #102033;
+  --muted: #57667c;
+  --accent: #0f766e;
+  --accent-soft: rgba(15, 118, 110, 0.1);
+  --shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
 }
 
 body {
+  margin: 0;
+  min-height: 100vh;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.landing-page {
+  padding: 40px 20px 56px;
+}
+
+.page-frame {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.hero {
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  line-height: 0.95;
+}
+
+.content-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+}
+
+.stack {
+  display: grid;
+  gap: 24px;
+}
+
+.card-shell {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.card-body {
+  padding: 22px 24px 24px;
+}
+
+.card-body h2 {
+  margin: 0 0 18px;
+  font-size: 1.05rem;
+}
+
+.body-copy {
+  margin: 0;
+  color: var(--foreground);
+}
+
+.contact-table {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.contact-row {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.contact-row dt {
+  color: var(--muted);
+  font-weight: 700;
+  text-align: right;
+}
+
+.contact-row dd {
+  margin: 0;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.gpg-list {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gpg-item {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-strong);
+}
+
+.gpg-meta p {
+  margin: 0;
+}
+
+.gpg-id,
+.gpg-fingerprint {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.88rem;
+}
+
+.gpg-id {
+  font-weight: 700;
+}
+
+.gpg-uid {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.gpg-fingerprint {
+  margin-top: 8px;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+.gpg-link {
+  width: fit-content;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.bullet-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.bullet-list li + li {
+  margin-top: 8px;
+}
+
+.project-list {
+  display: grid;
+  gap: 12px;
+}
+
+.project-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-strong);
+  overflow: hidden;
+}
+
+.project-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-weight: 700;
+}
+
+.project-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.project-item summary::after {
+  content: "+";
+  float: right;
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.project-item[open] summary {
+  background: var(--accent-soft);
+}
+
+.project-item[open] summary::after {
+  content: "−";
+}
+
+.project-content {
+  padding: 0 16px 16px;
+}
+
+.project-content p {
+  margin: 0;
+  color: var(--foreground);
+}
+
+.project-content p + p {
+  margin-top: 12px;
+}
+
+@media (max-width: 1080px) {
+  .content-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .landing-page {
+    padding: 28px 14px 40px;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+
+  .contact-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .contact-row dt {
+    text-align: left;
+  }
 }
